@@ -10,7 +10,13 @@ public class AppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Username=insertokname;Password=DebugPassword;Database=insertokname_db");
+        String? dbAddres = Environment.GetEnvironmentVariable("POSTGRESSQL_CONNECTION_ADDRESS");
+        if (dbAddres == null)
+        {
+            Console.WriteLine("No POSTGRESSQL_CONNECTION_ADDRESS set!\nDefaulting to localhost ass posgres address!");
+            dbAddres = "localhost";
+        }
+        optionsBuilder.UseNpgsql($"Host={dbAddres};Port=5432;Username=insertokname;Password=DebugPassword;Database=insertokname_db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

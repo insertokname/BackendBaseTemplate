@@ -10,3 +10,14 @@ services:
         - ~/.BackendOlimpiadaIsto/postgres:/var/lib/postgresql/data
       ports:
         - 5432:5432
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8888
+      - POSTGRESSQL_CONNECTION_ADDRESS=db
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db

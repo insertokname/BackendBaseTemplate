@@ -1,4 +1,5 @@
 using System.Reflection.Metadata;
+using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 
@@ -18,7 +19,7 @@ public class VerifyAnswerQueryHandler
     {
         var question = await _questionRepository.GetByIdAsync(query.QuestionId);
         if (question == null)
-            throw new ArgumentException("Question not found for the given id", nameof(query.QuestionId));
+            throw new NotFoundException($"Question not found for the given id: {query.QuestionId}");
         return question.Answers.CorrectAnswerIndex == query.GivenAnswerIndex;
     }
 }

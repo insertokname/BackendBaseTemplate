@@ -1,6 +1,7 @@
 using BackendOlimpiadaIsto.application.Query;
 using BackendOlimpiadaIsto.infrastructure.Data;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,37 @@ builder.Services.AddScoped<VerifyAnswerQueryHandler>();
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+//Try to migrate any changes done to the database
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    const int maxRetry = 5;
+    int retryCount = 0;
+    bool migrated = false;
+    
+    while (!migrated && retryCount < maxRetry)
+    {
+        try
+        {
+            Console.WriteLine("Migrating");
+            db.Database.Migrate();
+            migrated = true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Migration attempt {retryCount + 1} failed: {ex.Message}");
+            retryCount++;
+            Thread.Sleep(5000); // Wait 5 seconds before retrying
+        }
+    }
+
+    if (!migrated)
+    {
+        Console.WriteLine("Database migration failed after maximum retries.");
+        throw new Exception("Database not ready");
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

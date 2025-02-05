@@ -1,6 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BackendOlimpiadaIsto.application.Query;
 
-public record VerifyAnswerQuery(
-    Guid QuestionId, 
-    int GivenAnswerIndex
-);
+public class VerifyAnswerQuery
+{
+    public required Guid QuestionId { get; set; }
+    public required int GivenAnswerIndex { get; set; }
+
+}

@@ -49,8 +49,8 @@ public class QuestionsController : ControllerBase
         }
         try
         {
-            var question = await _deleteHandler.HandleAsync(command);
-            return Ok(question);
+            await _deleteHandler.HandleAsync(command);
+            return Ok();
         }
         catch (NotFoundException)
         {

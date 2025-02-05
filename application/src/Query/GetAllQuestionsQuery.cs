@@ -1,3 +1,3 @@
 namespace BackendOlimpiadaIsto.application.Query;
 
-public record GetAllQuestionsQuery;
+public class GetAllQuestionsQuery;
