@@ -1,6 +1,4 @@
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.PetPrompts;
-using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.PetPrompts;
 using BackendOlimpiadaIsto.application.Query.Questions;
