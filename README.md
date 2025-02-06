@@ -1,10 +1,25 @@
 This is a small api backend to run locally on my server 
 
+### Design Patterns Employed
+
+- **Repository Pattern**  
+    Abstracts data access through a common interface. This is evident in the generic repository implementation that encapsulates CRUD operations.
+
+- **CQRS (Command Query Responsibility Segregation)**  
+    Separates read and write operations. Commands (e.g., Create, Delete) and queries (e.g., GetAll, Verify) are handled by distinct handler classes.
+
+- **Dependency Injection**  
+    Handlers and repositories are injected into controllers and other services, promoting loose coupling.
+
+- **Domain-Driven Design (DDD)**  
+    The application follows DDD principles with a clear separation of concerns through distinct layers (Domain, Application, Infrastructure, Presentation). Domain entities and value objects encapsulate business rules and logic.
+
+
+### Building / Running
+
 ### Dependecies
 
 - [Docker](https://www.docker.com/products/docker-desktop/) and also [docker-compose](https://github.com/docker/compose)
-
-### Building / Running
 
 ##### Running api and database toghether
 
