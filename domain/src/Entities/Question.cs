@@ -5,13 +5,10 @@ namespace BackendOlimpiadaIsto.domain.Entities;
 
 public class Question : Entity
 {
-    public string QuestionPrompt { get; set; }
-    public AnswerList Answers { get; set; }
+    public string QuestionPrompt { get; set; } = null!;
+    public AnswerList Answers { get; set; } = null!;
 
-    protected Question() : base(Guid.Empty)
-    {
-        QuestionPrompt = string.Empty;
-    }
+    protected Question() : base(Guid.Empty) { }
 
     public Question(Guid id, string questionPrompt, AnswerList answers) : base(id)
     {

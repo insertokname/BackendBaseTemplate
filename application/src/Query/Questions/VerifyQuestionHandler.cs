@@ -3,19 +3,19 @@ using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 
-namespace BackendOlimpiadaIsto.application.Query;
+namespace BackendOlimpiadaIsto.application.Query.Questions;
 
-public class VerifyAnswerQueryHandler
+public class VerifyQuestionHandler
 {
     private readonly IRepository<Question> _questionRepository;
 
 
-    public VerifyAnswerQueryHandler(IRepository<Question> repository)
+    public VerifyQuestionHandler(IRepository<Question> repository)
     {
         _questionRepository = repository;
     }
 
-    public async Task<bool> HandleAsync(VerifyAnswerQuery query)
+    public async Task<bool> HandleAsync(VerifyQuestionQuery query)
     {
         var question = await _questionRepository.GetByIdAsync(query.QuestionId);
         if (question == null)

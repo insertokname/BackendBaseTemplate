@@ -1,4 +1,8 @@
-using BackendOlimpiadaIsto.application.Query;
+using BackendOlimpiadaIsto.application.Commands.GenericCommands;
+using BackendOlimpiadaIsto.application.Commands.PetPrompts;
+using BackendOlimpiadaIsto.application.Commands.Questions;
+using BackendOlimpiadaIsto.application.Query.GenericQueries;
+using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.infrastructure.Data;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +14,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-builder.Services.AddScoped<CreateQuestionHandler>();
-builder.Services.AddScoped<DeleteQuestionHandler>();
-builder.Services.AddScoped<GetAllQuestionsQueryHandler>();
-builder.Services.AddScoped<VerifyAnswerQueryHandler>();
+builder.Services.AddScoped(typeof(CreateCommandHandler<,>));
+builder.Services.AddScoped(typeof(DeleteByIdCommandHandler<>));
+builder.Services.AddScoped(typeof(GetAllQueryHandler<>));
+
+
+builder.Services.AddScoped(typeof(VerifyQuestionHandler));
 
 builder.Services.AddControllers();
 
@@ -26,7 +32,7 @@ using (var scope = app.Services.CreateScope())
     const int maxRetry = 5;
     int retryCount = 0;
     bool migrated = false;
-    
+
     while (!migrated && retryCount < maxRetry)
     {
         try
@@ -39,7 +45,7 @@ using (var scope = app.Services.CreateScope())
         {
             Console.WriteLine($"Migration attempt {retryCount + 1} failed: {ex.Message}");
             retryCount++;
-            Thread.Sleep(5000); // Wait 5 seconds before retrying
+            Thread.Sleep(5000);
         }
     }
 

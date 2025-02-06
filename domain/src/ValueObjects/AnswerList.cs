@@ -2,14 +2,10 @@ namespace domain.ValueObjects;
 
 public class AnswerList
 {
-    public List<string> Answers { get; set; }
+    public List<string> Answers { get; set; } = null!;
     public int CorrectAnswerIndex { get; set; }
 
-    public AnswerList()
-    {
-        Answers = [];
-        CorrectAnswerIndex = 0;
-    }
+    public AnswerList() { }
 
     public AnswerList(List<string> answers, int correctAnswerIndex)
     {
