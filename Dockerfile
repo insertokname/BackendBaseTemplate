@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 COPY . .
-RUN rm -r ./*/bin
-RUN rm -r ./*/obj
+RUN rm -r ./*/bin || true
+RUN rm -r ./*/obj || true
 RUN dotnet restore "BackendOlimpiadaIsto.sln"
 RUN dotnet publish "Presentation/Presentation.csproj" -c Release -o /app/publish
 
