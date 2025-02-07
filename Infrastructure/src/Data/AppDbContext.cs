@@ -8,10 +8,11 @@ public class AppDbContext : DbContext
 {
     public DbSet<Question> Questions { get; set; } = null!;
     public DbSet<PetPrompt> PetPrompts { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        String? dbAddres = Environment.GetEnvironmentVariable("POSTGRESSQL_CONNECTION_ADDRESS");
+        string? dbAddres = Environment.GetEnvironmentVariable("POSTGRESSQL_CONNECTION_ADDRESS");
         if (dbAddres == null)
         {
             dbAddres = "localhost";

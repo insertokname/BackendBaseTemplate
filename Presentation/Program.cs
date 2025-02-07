@@ -1,10 +1,15 @@
+using System.Text;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
+using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.PetPrompts;
 using BackendOlimpiadaIsto.application.Query.Questions;
+using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Data;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +25,25 @@ builder.Services.AddScoped(typeof(GetAllQueryHandler<>));
 
 builder.Services.AddScoped(typeof(VerifyQuestionHandler));
 builder.Services.AddScoped(typeof(GetRandomPromptQueryHandler));
+
+builder.Services.AddScoped(typeof(LoginUserCommandHandler));
+builder.Services.AddScoped(typeof(CreateUserCommandHandler));
+
+builder.Services.AddSingleton(typeof(TokenProvider));
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o=>
+    {
+        o.RequireHttpsMetadata = false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 builder.Services.AddControllers();
 
@@ -63,6 +87,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.Run();

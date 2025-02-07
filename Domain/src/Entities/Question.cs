@@ -8,7 +8,7 @@ public class Question : Entity
     public string QuestionPrompt { get; set; } = null!;
     public AnswerList Answers { get; set; } = null!;
 
-    protected Question() : base(Guid.Empty) { }
+    private Question() : base(Guid.Empty) { }
 
     public Question(Guid id, string questionPrompt, AnswerList answers) : base(id)
     {

@@ -3,6 +3,7 @@ using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackendOlimpiadaIsto.presentation.Controllers;
@@ -27,6 +28,7 @@ where CreateCommand : ICreateCommand<E>
         _getAllQueryHandler = getAllQueryHandler;
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<E>> Post([FromBody] CreateCommand command)
     {
@@ -37,6 +39,7 @@ where CreateCommand : ICreateCommand<E>
         return Ok(await _createCommandHandler.HandleAsync(command));
     }
 
+    [Authorize]
     [HttpDelete]
     public async Task<ActionResult<Question>> Delete([FromBody] DeleteByIdCommand command)
     {
@@ -55,6 +58,7 @@ where CreateCommand : ICreateCommand<E>
         }
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Question>>> GetAll()
     {
