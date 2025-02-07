@@ -48,7 +48,16 @@ public class UserController : ControllerBase
     [Route("login")]
     public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command)
     {
-        return Ok(await _loginUserCommandHandler.HandleAsync(command));
+        switch (await _loginUserCommandHandler.HandleAsync(command))
+        {
+            case LoginUserResult.Ok token:
+                return Ok(token.Token);
+            case LoginUserResult.IncorectPassword:
+                return Ok("Bad Password");
+            case LoginUserResult.NoUsernameFound:
+                return Ok("Bad Username");
+        }
+        return Ok("Unknown error occured");
     }
 
     [Authorize]

@@ -1,4 +1,5 @@
 using BackendOlimpiadaIsto.domain.Entities;
+using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 
 namespace BackendOlimpiadaIsto.application.Commands.Users;
@@ -21,7 +22,12 @@ public class CreateUserCommandHandler
         }
 
 
-        User newUser = new User(Guid.NewGuid(),command.Username, command.Password);
+        User newUser = new User(
+            Guid.NewGuid(),
+            command.Username,
+            BCrypt.Net.BCrypt.EnhancedHashPassword(command.Password, Constants.WorkFactor)
+        );
+
         await _userRepository.AddAsync(newUser);
         await _userRepository.SaveChangesAsync();
         return new CreateUserResult.Ok(newUser);

@@ -1,6 +1,7 @@
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendOlimpiadaIsto.application.Commands.Users;
@@ -19,24 +20,25 @@ public class LoginUserCommandHandler
         _tokenProvider = tokenProvider;
     }
 
-    public async Task<string?> HandleAsync(LoginUserCommand command)
+    public async Task<LoginUserResult> HandleAsync(LoginUserCommand command)
     {
-        // E newEntity = command.CreateEntity();
-        // await _userRepository.AddAsync(newEntity);
-        // await _userRepository.SaveChangesAsync();
-        // return newEntity;
-        // var user = new User(Guid.Parse("5524fd51-c43a-4ecd-bd4a-76f61041789b"));
-
         User? user = await _userRepository.GetQueryable().FirstOrDefaultAsync(u =>
-            u.Username.Equals(command.Username) &&
-            u.Password.Equals(command.Password)
+            u.Username.Equals(command.Username)
         );
 
         if (user == null)
         {
-            return null;
+            return new LoginUserResult.NoUsernameFound();
         }
 
-        return _tokenProvider.Create(user);
+
+        if (BCrypt.Net.BCrypt.EnhancedVerify(command.Password, user.Password))
+        {
+            return new LoginUserResult.Ok(_tokenProvider.Create(user));
+        }
+        else
+        {
+            return new LoginUserResult.IncorectPassword();
+        }
     }
 }
