@@ -31,16 +31,20 @@ builder.Services.AddScoped(typeof(CreateUserCommandHandler));
 
 builder.Services.AddSingleton(typeof(TokenProvider));
 
+SecretsManager secretsManager = new SecretsManager(builder.Configuration);
+builder.Services.AddSingleton(secretsManager);
+
+
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(o=>
+    .AddJwtBearer(o =>
     {
         o.RequireHttpsMetadata = false;
         o.TokenValidationParameters = new TokenValidationParameters
         {
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]!)),
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretsManager.JwtSecret)),
+            ValidIssuer = secretsManager.JwtIssuer,
+            ValidAudience = secretsManager.JwtAudience,
             ClockSkew = TimeSpan.Zero
         };
     });

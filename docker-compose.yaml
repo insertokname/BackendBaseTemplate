@@ -16,7 +16,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_URLS=http://+:8888
-      - POSTGRESSQL_CONNECTION_ADDRESS=db
+      - DB_HOST=db
     ports:
       - "8888:8888"
     depends_on:

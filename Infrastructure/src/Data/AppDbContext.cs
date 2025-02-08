@@ -10,14 +10,21 @@ public class AppDbContext : DbContext
     public DbSet<PetPrompt> PetPrompts { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
 
+    private readonly SecretsManager _secretsManager;
+
+    public AppDbContext(SecretsManager secretsManager)
+    {
+        _secretsManager = secretsManager;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        string? dbAddres = Environment.GetEnvironmentVariable("POSTGRESSQL_CONNECTION_ADDRESS");
-        if (dbAddres == null)
-        {
-            dbAddres = "localhost";
-        }
-        optionsBuilder.UseNpgsql($"Host={dbAddres};Port=5432;Username=insertokname;Password=DebugPassword;Database=insertokname_db");
+        optionsBuilder.UseNpgsql(
+            $"Host={_secretsManager.DbHost};" +
+            $"Port={_secretsManager.DbPort};"+
+            $"Username={_secretsManager.DbUsername};"+
+            $"Password={_secretsManager.DbPassword};"+
+            $"Database={_secretsManager.DbName}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

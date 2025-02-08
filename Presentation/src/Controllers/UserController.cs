@@ -28,7 +28,7 @@ public class UserController : ControllerBase
         _getAllHandler = getAllHandler;
     }
 
-    // [Authorize]
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser([FromBody] CreateUserCommand command)
     {

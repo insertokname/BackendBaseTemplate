@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
@@ -9,35 +8,18 @@ namespace BackendOlimpiadaIsto.infrastructure;
 
 public class TokenProvider
 {
-    private readonly IConfiguration _configuration;
+    private readonly SecretsManager _secretsManager;
 
-    public TokenProvider(IConfiguration configuration) {
-        _configuration = configuration;
-        
+    public TokenProvider(SecretsManager secretsManager)
+    {
+        _secretsManager = secretsManager;
+
     }
     public string Create(User user)
     {
-        string? secretKey = _configuration["Jwt:secret"];
-        string? envSecretKey = Environment.GetEnvironmentVariable("API_JWT_SECRET");
-        string? finalSecret = null;
-        if (envSecretKey == null)
-        {
-            if (secretKey != null)
-            {
-                finalSecret = secretKey;
-                Console.WriteLine("\nONLY APPSETING.JSON API_JWT_SECRET SET!\nTHIS IS ONLY MENT FOR DEVELOPMENT AND IS VERY INSECURE!\nMAKE SURE TO SET THE `API_JWT_SECRET` ENVIRONMENT VARIABLE TO THE ENCODING SECRET WHEN RUNNING THE APP IN PRODUCTION!");
-            }
-            else
-            {
-                throw new Exception("No jwt secret key was set!");
-            }
-        }
-        else
-        {
-            finalSecret = envSecretKey;
-        }
+        string secretKey = _secretsManager.JwtSecret;
 
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(finalSecret));
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -46,10 +28,10 @@ public class TokenProvider
             [
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             ]),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpirationInMinutes"]!)),
+            Expires = DateTime.UtcNow.AddMinutes(double.Parse(_secretsManager.JwtExpirationInMinutes)),
             SigningCredentials = credentials,
-            Issuer = _configuration["Jwt:Issuer"],
-            Audience = _configuration["Jwt:Audience"]
+            Issuer = _secretsManager.JwtIssuer,
+            Audience = _secretsManager.JwtAudience
         };
 
         var handler = new JsonWebTokenHandler();
