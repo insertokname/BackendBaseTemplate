@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using System.Threading.RateLimiting;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
@@ -5,11 +6,11 @@ using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.PetPrompts;
 using BackendOlimpiadaIsto.application.Query.Questions;
+using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Data;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -48,6 +49,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = secretsManager.JwtIssuer,
             ValidAudience = secretsManager.JwtAudience,
             ClockSkew = TimeSpan.Zero
+        };
+        o.Events = new JwtBearerEvents
+        {
+            OnTokenValidated = async context =>
+            {
+                var userIdClaim = context.Principal?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!Guid.TryParse(userIdClaim, out var userId))
+                {
+                    context.Fail("Invalid user id in token.");
+                    return;
+                }
+
+                if (userId == secretsManager.DefaultAdminGuid)
+                {
+                    return;
+                }
+
+                var repository = context.HttpContext.RequestServices.GetRequiredService<IRepository<User>>();
+                var user = await repository.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    context.Fail("User does not exist.");
+                }
+            }
         };
     });
 

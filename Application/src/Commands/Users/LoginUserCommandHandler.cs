@@ -35,7 +35,7 @@ public class LoginUserCommandHandler
             return new LoginUserResult.Ok(
                 _tokenProvider.Create(
                     new User(
-                        Guid.Empty,
+                        _secretsManager.DefaultAdminGuid,
                         command.Username,
                         command.Password
                     )

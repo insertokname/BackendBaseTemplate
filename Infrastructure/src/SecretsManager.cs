@@ -14,6 +14,8 @@ public class SecretsManager
 
     public string DefaultAdminUsername { get; }
     public string DefaultAdminPassword { get; }
+    public Guid DefaultAdminGuid { get; }
+
 
     public string JwtSecret { get; }
     public string JwtIssuer { get; }
@@ -47,6 +49,12 @@ public class SecretsManager
 
         DefaultAdminUsername = GetSecret("BACKEND_ADMIN_USERNAME");
         DefaultAdminPassword = GetSecret("BACKEND_ADMIN_PASSWORD");
+        string defaultAdminGuidString = GetSecret("BACKEND_ADMIN_GUID");
+        if (!Guid.TryParse(defaultAdminGuidString, out var parsedGuid))
+        {
+            throw new ArgumentException($"Could not parse the guid for the BACKEND_ADMIN_GUID secret!\nGot value {defaultAdminGuidString}");
+        }
+        DefaultAdminGuid = parsedGuid;
 
         JwtSecret = GetSecret("JWT_SECRET");
         JwtIssuer = GetSecret("JWT_ISSUER");
