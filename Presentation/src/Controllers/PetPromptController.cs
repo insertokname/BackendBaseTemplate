@@ -4,6 +4,7 @@ using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.PetPrompts;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BackendOlimpiadaIsto.presentation.Controllers;
 [ApiController]
@@ -23,6 +24,7 @@ public class PetPromptsController : EntityController<PetPrompt, CreatePetPromptC
 
     [HttpGet]
     [Route("random")]
+    [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<PetPrompt>> Random()
     {
         return Ok(await _getRandomPromptQueryHandler.HandleAsync());

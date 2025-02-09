@@ -5,6 +5,7 @@ using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BackendOlimpiadaIsto.presentation.Controllers;
 [ApiController]
@@ -24,6 +25,7 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
 
     [HttpGet]
     [Route("verify")]
+    [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<bool>> Verify([FromBody] VerifyQuestionQuery query)
     {
         if (!ModelState.IsValid)

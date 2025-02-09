@@ -5,6 +5,7 @@ using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace BackendOlimpiadaIsto.presentation.Controllers;
 [ApiController]
@@ -46,6 +47,7 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("login")]
+    [EnableRateLimiting("LoginRateLimit")]
     public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command)
     {
         switch (await _loginUserCommandHandler.HandleAsync(command))
