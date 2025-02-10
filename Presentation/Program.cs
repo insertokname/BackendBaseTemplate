@@ -4,7 +4,6 @@ using System.Threading.RateLimiting;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.PetPrompts;
 using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
@@ -24,10 +23,10 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(CreateCommandHandler<,>));
 builder.Services.AddScoped(typeof(DeleteByIdCommandHandler<>));
 builder.Services.AddScoped(typeof(GetAllQueryHandler<>));
+builder.Services.AddScoped(typeof(GetRandomQueryHandler<>));
 
 
 builder.Services.AddScoped(typeof(VerifyQuestionHandler));
-builder.Services.AddScoped(typeof(GetRandomPromptQueryHandler));
 
 builder.Services.AddScoped(typeof(LoginUserCommandHandler));
 builder.Services.AddScoped(typeof(CreateUserCommandHandler));

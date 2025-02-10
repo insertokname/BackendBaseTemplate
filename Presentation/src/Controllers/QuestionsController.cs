@@ -13,13 +13,16 @@ namespace BackendOlimpiadaIsto.presentation.Controllers;
 public class QuestionsController : EntityController<Question, CreateQuestionCommand>
 {
     public readonly VerifyQuestionHandler _verifyHandler;
+    public readonly GetRandomQueryHandler<Question> _getRandomQueryHandler;
     public QuestionsController(
         CreateCommandHandler<CreateQuestionCommand, Question> createHandler,
         DeleteByIdCommandHandler<Question> deleteHandler,
         GetAllQueryHandler<Question> getAllHandler,
+        GetRandomQueryHandler<Question> getRandomQueryHandler,
         VerifyQuestionHandler verifyHandler
     ) : base(createHandler, deleteHandler, getAllHandler)
     {
+        _getRandomQueryHandler = getRandomQueryHandler;
         _verifyHandler = verifyHandler;
     }
 
@@ -40,5 +43,15 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
         {
             return NotFound();
         }
+    }
+
+    [HttpGet]
+    [Route("random")]
+    [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
+    public async Task<ActionResult<string>> Random()
+    {
+        return Ok(
+            (await _getRandomQueryHandler.HandleAsync()).QuestionPrompt
+        );
     }
 }
