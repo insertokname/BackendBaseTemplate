@@ -1,23 +1,63 @@
 services:
+  certbot:
+    image: certbot/certbot
+    ports:
+      - 80:80
+    volumes:
+      - certbot-var:/var/lib/letsencrypt
+      - certbot-etc:/etc/letsencrypt
+    entrypoint: >
+      sh -c "while true; do
+               certbot renew --standalone --preferred-challenges http;
+               sleep 12h;
+             done"
+
   db:
-      image: postgres:latest
-      environment:
-        POSTGRES_DB: insertokname_db
-        POSTGRES_USER: insertokname
-        POSTGRES_PASSWORD: DebugPassword
-        PGDATA: /var/lib/postgresql/data/pgdata
-      volumes:
-        - ~/.BackendOlimpiadaIsto/postgres:/var/lib/postgresql/data
-      ports:
-        - 5432:5432
-  api:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: insertokname_db
+      POSTGRES_USER: insertokname
+      POSTGRES_PASSWORD: DebugPassword
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ~/.BackendOlimpiadaIsto/postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  api-https:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
+      - API_PROTOCOL=https
+      - ASPNETCORE_URLS=https://+:8888
+      - DB_HOST=db
+    ports:
+      - "8888:8888"
+    depends_on:
+      - db
+      - certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+    profiles:
+      - https
+
+  api-http:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - API_PROTOCOL=http
       - ASPNETCORE_URLS=http://+:8888
       - DB_HOST=db
     ports:
       - "8888:8888"
     depends_on:
       - db
+    profiles:
+      - http
+  
+
+volumes:
+  certbot-var:
+  certbot-etc:
