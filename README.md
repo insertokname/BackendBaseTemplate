@@ -34,10 +34,16 @@ This is a small api backend to run locally on my server
 
 - clone the repo `git clone https://github.com/insertokname/BackendOlimpiadaIsto.git`
 - cd into it `cd BackendOlimpiadaIsto`
+- make a file name `.env` in the directory containing the following (these will be the default logins for the admin account of the api):
+```
+BACKEND_ADMIN_USERNAME=admin
+BACKEND_ADMIN_PASSWORD=AVeryStrongPassword!
+```
 - *make sure docker desktop is running! and docker-compose command is installed*
 - run `docker-compose --profile http up -d`. This will start the api in http mode and will also start the database service. You can see your running containers in docker desktop or by running `docker-compose ps`. You can stop the container by running `docker-compose --profile http down` or by going in the docker desktop app and stopping them manually. You can also reset the database by deleting the data under `~/.BackendOlimpiadaIsto/postgres` OR `%USERPROFILE%\BackendOlimpiadaIsto\postgres`
 - If you are planning on using this for production:
-    -  don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
+    - **change the username and the password** in the `.env` file
+    - don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
     - **Make sure you enable https!** To do so, check the [Enabling https](#enabling-https) section.
 
 #### Development
