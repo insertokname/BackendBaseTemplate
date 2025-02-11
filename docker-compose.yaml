@@ -11,6 +11,8 @@ services:
                certbot renew --standalone --preferred-challenges http;
                sleep 12h;
              done"
+    profiles:
+      - https
 
   db:
     image: postgres:latest
@@ -23,6 +25,9 @@ services:
       - ~/.BackendOlimpiadaIsto/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    profiles:
+      - https
+      - http
 
   api-https:
     build:
