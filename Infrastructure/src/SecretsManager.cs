@@ -25,7 +25,7 @@ public class SecretsManager
     private string GetSecret(string secretName)
     {
         string? envVarValue = Environment.GetEnvironmentVariable(secretName);
-        if (envVarValue != null)
+        if (!string.IsNullOrEmpty(envVarValue))
         {
             return envVarValue;
         }
