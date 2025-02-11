@@ -1,7 +1,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-COPY . .
+
+COPY BackendOlimpiadaIsto.sln /src/
+
+COPY Application/Application.csproj Application/
+COPY Domain/Domain.csproj Domain/
+COPY Infrastructure/Infrastructure.csproj Infrastructure/
+COPY Presentation/Presentation.csproj Presentation/
+
+RUN dotnet restore "BackendOlimpiadaIsto.sln"
+
+COPY Application/ Application/
+COPY Domain/ Domain/
+COPY Infrastructure/ Infrastructure/
+COPY Presentation/ Presentation/
+
 RUN rm -r ./*/bin || true
 RUN rm -r ./*/obj || true
 RUN dotnet restore "BackendOlimpiadaIsto.sln"
