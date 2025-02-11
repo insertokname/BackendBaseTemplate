@@ -36,7 +36,9 @@ This is a small api backend to run locally on my server
 - cd into it `cd BackendOlimpiadaIsto`
 - *make sure docker desktop is running! and docker-compose command is installed*
 - run `docker-compose --profile http up -d`. This will start the api in http mode and will also start the database service. You can see your running containers in docker desktop or by running `docker-compose ps`. You can stop the container by running `docker-compose --profile http down` or by going in the docker desktop app and stopping them manually. You can also reset the database by deleting the data under `~/.BackendOlimpiadaIsto/postgres` OR `%USERPROFILE%\BackendOlimpiadaIsto\postgres`
-- If you are planning on using this for production don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
+- If you are planning on using this for production:
+    -  don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
+    - **Make sure you enable https!** To do so, check the [Enabling https](#enabling-https) section.
 
 #### Development
 
@@ -46,3 +48,16 @@ I recomend running the database and the api separatley for this. You will requir
 - make sure the postgressql database is running with `docker-compose up db -d` (you can also stop the db with `docker-compose down db`)
 - cd into the api layer `cd Presentation` 
 - run the api `dotnet run`
+
+
+#### Enabling https
+
+- **Https requires you own a domain name!**
+- **Make sure port 80 is opened on your server / you have port forwarding for port 80 enabled on your router** This is necessary for the certbot verification!
+- Make sure all **http** services are down (`docker-compose --profile http down` will stop them).
+- Register your certificate using the `certbot` service provided in the `docker-compose` by running this one of command (**MAKE SURE TO REPLACE `<DOMAIN_NAME>` and `<EMAIL>` with you correct info**):
+```
+docker-compose run --remove-orphans --service-ports --entrypoint certbot certbot certonly --standalone -d <DOMAIN_NAME> --agree-tos --non-interactive -m <EMAIL>
+```
+- After this certbot will register your domain with Let's encrypt and you will have valid https!
+- You can now run the `docker-compose` command as you normally did but **instead of using `--profile http` use `--profile https`**: `docker-compose --profile https up -d` & `docker-compose --profile https down`
