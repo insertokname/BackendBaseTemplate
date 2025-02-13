@@ -2,6 +2,7 @@ using System.Security.Claims;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
+using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -12,12 +13,12 @@ namespace BackendOlimpiadaIsto.presentation.Controllers;
 public class QuestionsController : EntityController<Question, CreateQuestionCommand>
 {
     public readonly VerifyQuestionHandler _verifyHandler;
-    public readonly GetRandomHandler<Question> _getRandomHandler;
+    public readonly GetRandomQuestionHandler _getRandomHandler;
     public QuestionsController(
         CreateHandler<CreateQuestionCommand, Question> createHandler,
         DeleteByIdHandler<Question> deleteHandler,
         GetAllHandler<Question> getAllHandler,
-        GetRandomHandler<Question> getRandomHandler,
+        GetRandomQuestionHandler getRandomHandler,
         VerifyQuestionHandler verifyHandler
     ) : base(createHandler, deleteHandler, getAllHandler)
     {
@@ -55,7 +56,18 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
     [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<string>> Random()
     {
-        var randomQuestion = await _getRandomHandler.HandleAsync();
+        Question randomQuestion;
+        bool isAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
+        var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!isAuthenticated || !Guid.TryParse(userIdClaim, out var userId))
+        {
+            randomQuestion = await _getRandomHandler.HandleAsync(null);
+        }
+        else
+        {
+            randomQuestion = await _getRandomHandler.HandleAsync(userId);
+        }
+        
         return Ok(
             new
             {
