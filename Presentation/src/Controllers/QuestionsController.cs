@@ -37,7 +37,8 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
         }
         try
         {
-            return Ok(await _verifyHandler.HandleAsync(query));
+	    var verify = await _verifyHandler.HandleAsync(query);
+            return Ok(new {IsCorrect = verify});
         }
         catch (NotFoundException)
         {
@@ -50,8 +51,15 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
     [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<string>> Random()
     {
+        var randomQuestion = await _getRandomQueryHandler.HandleAsync();
         return Ok(
-            (await _getRandomQueryHandler.HandleAsync()).QuestionPrompt
+            new
+            {
+                Id = randomQuestion.Id,
+                QuestionPrompt = randomQuestion.QuestionPrompt,
+                Answers = randomQuestion.Answers.Answers,
+                QuestionSource = "Made it up"
+            }
         );
     }
 }
