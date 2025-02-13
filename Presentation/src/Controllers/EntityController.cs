@@ -1,6 +1,4 @@
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.Questions;
-using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -13,19 +11,19 @@ public class EntityController<E, CreateCommand> : ControllerBase
 where E : Entity
 where CreateCommand : ICreateCommand<E>
 {
-    private readonly CreateCommandHandler<CreateCommand, E> _createCommandHandler;
-    private readonly DeleteByIdCommandHandler<E> _deleteByIdCommandHandler;
-    private readonly GetAllQueryHandler<E> _getAllQueryHandler;
+    private readonly CreateHandler<CreateCommand, E> _createHandler;
+    private readonly DeleteByIdHandler<E> _deleteByIdHandler;
+    private readonly GetAllHandler<E> _getAllHandler;
 
     public EntityController(
-         CreateCommandHandler<CreateCommand, E> createCommandHandler,
-         DeleteByIdCommandHandler<E> deleteByIdCommandHandler,
-         GetAllQueryHandler<E> getAllQueryHandler
+         CreateHandler<CreateCommand, E> createHandler,
+         DeleteByIdHandler<E> deleteByIdHandler,
+         GetAllHandler<E> getAllHandler
     )
     {
-        _createCommandHandler = createCommandHandler;
-        _deleteByIdCommandHandler = deleteByIdCommandHandler;
-        _getAllQueryHandler = getAllQueryHandler;
+        _createHandler = createHandler;
+        _deleteByIdHandler = deleteByIdHandler;
+        _getAllHandler = getAllHandler;
     }
 
     [Authorize]
@@ -36,7 +34,7 @@ where CreateCommand : ICreateCommand<E>
         {
             return BadRequest();
         }
-        return Ok(await _createCommandHandler.HandleAsync(command));
+        return Ok(await _createHandler.HandleAsync(command));
     }
 
     [Authorize]
@@ -47,7 +45,7 @@ where CreateCommand : ICreateCommand<E>
         {
             return BadRequest();
         }
-        await _deleteByIdCommandHandler.HandleAsync(command);
+        await _deleteByIdHandler.HandleAsync(command);
         return Ok();
     }
 
@@ -55,7 +53,7 @@ where CreateCommand : ICreateCommand<E>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Question>>> GetAll()
     {
-        return Ok(await _getAllQueryHandler.HandleAsync());
+        return Ok(await _getAllHandler.HandleAsync());
     }
 
 }

@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Data;
 
 namespace BackendOlimpiadaIsto.infrastructure.Repositories;

@@ -1,18 +1,17 @@
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
-using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 
 namespace BackendOlimpiadaIsto.application.Commands.Users;
 
-public class LoginUserCommandHandler
+public class LoginUserHandler
 {
     private readonly IRepository<User> _userRepository;
     private readonly TokenProvider _tokenProvider;
     private readonly SecretsManager _secretsManager;
 
-    public LoginUserCommandHandler(
+    public LoginUserHandler(
         IRepository<User> entityRepository,
         TokenProvider tokenProvider,
         SecretsManager secretsManager

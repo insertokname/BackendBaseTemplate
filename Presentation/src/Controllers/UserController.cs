@@ -1,6 +1,5 @@
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Users;
-using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -12,18 +11,18 @@ namespace BackendOlimpiadaIsto.presentation.Controllers;
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
-    public readonly LoginUserCommandHandler _loginUserCommandHandler;
-    public readonly CreateUserCommandHandler _createHandler;
-    public readonly DeleteByIdCommandHandler<User> _deleteHandler;
-    public readonly GetAllQueryHandler<User> _getAllHandler;
+    public readonly LoginUserHandler _loginUserHandler;
+    public readonly CreateUserHandler _createHandler;
+    public readonly DeleteByIdHandler<User> _deleteHandler;
+    public readonly GetAllHandler<User> _getAllHandler;
     public UserController(
-        LoginUserCommandHandler loginUserCommandHandler,
-        CreateUserCommandHandler createHandler,
-        DeleteByIdCommandHandler<User> deleteHandler,
-        GetAllQueryHandler<User> getAllHandler
+        LoginUserHandler loginUserHandler,
+        CreateUserHandler createHandler,
+        DeleteByIdHandler<User> deleteHandler,
+        GetAllHandler<User> getAllHandler
     )
     {
-        _loginUserCommandHandler = loginUserCommandHandler;
+        _loginUserHandler = loginUserHandler;
         _createHandler = createHandler;
         _deleteHandler = deleteHandler;
         _getAllHandler = getAllHandler;
@@ -50,7 +49,7 @@ public class UserController : ControllerBase
     [EnableRateLimiting("LoginRateLimit")]
     public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command)
     {
-        switch (await _loginUserCommandHandler.HandleAsync(command))
+        switch (await _loginUserHandler.HandleAsync(command))
         {
             case LoginUserResult.Ok token:
                 return Ok(token.Token);

@@ -1,5 +1,3 @@
-using domain.ValueObjects;
-
 namespace BackendOlimpiadaIsto.domain.Entities;
 
 

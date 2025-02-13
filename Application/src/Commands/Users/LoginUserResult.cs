@@ -1,5 +1,3 @@
-using BackendOlimpiadaIsto.domain.Entities;
-
 namespace BackendOlimpiadaIsto.application.Commands.Users;
 
 public abstract class LoginUserResult

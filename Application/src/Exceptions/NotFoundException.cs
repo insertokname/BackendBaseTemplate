@@ -1,5 +1,3 @@
-using System;
-
 namespace BackendOlimpiadaIsto.application.Exceptions;
 
 public class NotFoundException : Exception

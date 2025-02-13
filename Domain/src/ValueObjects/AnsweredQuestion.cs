@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using BackendOlimpiadaIsto.domain.Entities;
-
 namespace domain.ValueObjects;
 
 public class AnsweredQuestion

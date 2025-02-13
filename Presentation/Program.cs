@@ -53,16 +53,16 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-builder.Services.AddScoped(typeof(CreateCommandHandler<,>));
-builder.Services.AddScoped(typeof(DeleteByIdCommandHandler<>));
-builder.Services.AddScoped(typeof(GetAllQueryHandler<>));
-builder.Services.AddScoped(typeof(GetRandomQueryHandler<>));
+builder.Services.AddScoped(typeof(CreateHandler<,>));
+builder.Services.AddScoped(typeof(DeleteByIdHandler<>));
+builder.Services.AddScoped(typeof(GetAllHandler<>));
+builder.Services.AddScoped(typeof(GetRandomHandler<>));
 
 
 builder.Services.AddScoped(typeof(VerifyQuestionHandler));
 
-builder.Services.AddScoped(typeof(LoginUserCommandHandler));
-builder.Services.AddScoped(typeof(CreateUserCommandHandler));
+builder.Services.AddScoped(typeof(LoginUserHandler));
+builder.Services.AddScoped(typeof(CreateUserHandler));
 
 builder.Services.AddSingleton(typeof(TokenProvider));
 

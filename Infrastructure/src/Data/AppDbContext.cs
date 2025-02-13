@@ -1,4 +1,3 @@
-using BackendOlimpiadaIsto.domain;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.EntityFrameworkCore;
 

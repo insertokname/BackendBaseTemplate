@@ -5,12 +5,12 @@ using BackendOlimpiadaIsto.infrastructure.Repositories;
 namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
 
 
-public class DeleteByIdCommandHandler<E>
+public class DeleteByIdHandler<E>
 where E : Entity
 {
     private readonly IRepository<E> _entityRepository;
 
-    public DeleteByIdCommandHandler(IRepository<E> entityRepository)
+    public DeleteByIdHandler(IRepository<E> entityRepository)
     {
         _entityRepository = entityRepository;
     }

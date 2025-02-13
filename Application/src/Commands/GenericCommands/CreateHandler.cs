@@ -3,13 +3,13 @@ using BackendOlimpiadaIsto.infrastructure.Repositories;
 
 namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
 
-public class CreateCommandHandler<CreateCommand, E>
+public class CreateHandler<CreateCommand, E>
 where CreateCommand : ICreateCommand<E>
 where E : Entity
 {
     private readonly IRepository<E> _entityRepository;
 
-    public CreateCommandHandler(IRepository<E> entityRepository)
+    public CreateHandler(IRepository<E> entityRepository)
     {
         _entityRepository = entityRepository;
     }

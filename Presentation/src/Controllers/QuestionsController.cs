@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Questions;
-using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -13,16 +12,16 @@ namespace BackendOlimpiadaIsto.presentation.Controllers;
 public class QuestionsController : EntityController<Question, CreateQuestionCommand>
 {
     public readonly VerifyQuestionHandler _verifyHandler;
-    public readonly GetRandomQueryHandler<Question> _getRandomQueryHandler;
+    public readonly GetRandomHandler<Question> _getRandomHandler;
     public QuestionsController(
-        CreateCommandHandler<CreateQuestionCommand, Question> createHandler,
-        DeleteByIdCommandHandler<Question> deleteHandler,
-        GetAllQueryHandler<Question> getAllHandler,
-        GetRandomQueryHandler<Question> getRandomQueryHandler,
+        CreateHandler<CreateQuestionCommand, Question> createHandler,
+        DeleteByIdHandler<Question> deleteHandler,
+        GetAllHandler<Question> getAllHandler,
+        GetRandomHandler<Question> getRandomHandler,
         VerifyQuestionHandler verifyHandler
     ) : base(createHandler, deleteHandler, getAllHandler)
     {
-        _getRandomQueryHandler = getRandomQueryHandler;
+        _getRandomHandler = getRandomHandler;
         _verifyHandler = verifyHandler;
     }
 
@@ -56,7 +55,7 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
     [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<string>> Random()
     {
-        var randomQuestion = await _getRandomQueryHandler.HandleAsync();
+        var randomQuestion = await _getRandomHandler.HandleAsync();
         return Ok(
             new
             {

@@ -4,12 +4,12 @@ using BackendOlimpiadaIsto.infrastructure.Repositories;
 namespace BackendOlimpiadaIsto.application.Query.GenericQueries;
 
 
-public class GetAllQueryHandler<E>
+public class GetAllHandler<E>
 where E : Entity
 {
     private readonly IRepository<E> _entityRepository;
 
-    public GetAllQueryHandler(IRepository<E> entityRepository)
+    public GetAllHandler(IRepository<E> entityRepository)
     {
         _entityRepository = entityRepository;
     }

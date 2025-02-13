@@ -5,11 +5,11 @@ using BackendOlimpiadaIsto.infrastructure.Repositories;
 namespace BackendOlimpiadaIsto.application.Commands.Users;
 
 
-public class CreateUserCommandHandler
+public class CreateUserHandler
 {
     private readonly IRepository<User> _userRepository;
 
-    public CreateUserCommandHandler(IRepository<User> userRepository)
+    public CreateUserHandler(IRepository<User> userRepository)
     {
         _userRepository = userRepository;
     }

@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendOlimpiadaIsto.application.Query.GenericQueries;
 
-public class GetRandomQueryHandler<E>
+public class GetRandomHandler<E>
 where E: Entity
 {
     private readonly IRepository<E> _entityRepository;
 
-    public GetRandomQueryHandler(IRepository<E> entityRepository)
+    public GetRandomHandler(IRepository<E> entityRepository)
     {
         _entityRepository = entityRepository;
     }

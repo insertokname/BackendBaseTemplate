@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using BackendOlimpiadaIsto.infrastructure;
 
 namespace BackendOlimpiadaIsto.infrastructure.Data
 {

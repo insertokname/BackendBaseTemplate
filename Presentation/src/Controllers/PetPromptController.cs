@@ -10,15 +10,15 @@ namespace BackendOlimpiadaIsto.presentation.Controllers;
 [Route("api/[controller]")]
 public class PetPromptsController : EntityController<PetPrompt, CreatePetPromptCommand>
 {
-    private readonly GetRandomQueryHandler<PetPrompt> _getRandomQueryHandler;
+    private readonly GetRandomHandler<PetPrompt> _getRandomHandler;
     public PetPromptsController(
-        CreateCommandHandler<CreatePetPromptCommand, PetPrompt> createHandler,
-        DeleteByIdCommandHandler<PetPrompt> deleteHandler,
-        GetAllQueryHandler<PetPrompt> getAllHandler,
-        GetRandomQueryHandler<PetPrompt> getRandomQueryHandler
+        CreateHandler<CreatePetPromptCommand, PetPrompt> createHandler,
+        DeleteByIdHandler<PetPrompt> deleteHandler,
+        GetAllHandler<PetPrompt> getAllHandler,
+        GetRandomHandler<PetPrompt> getRandomHandler
     ) : base(createHandler, deleteHandler, getAllHandler)
     {
-        _getRandomQueryHandler = getRandomQueryHandler;
+        _getRandomHandler = getRandomHandler;
     }
 
     [HttpGet]
@@ -27,7 +27,7 @@ public class PetPromptsController : EntityController<PetPrompt, CreatePetPromptC
     public async Task<ActionResult<string>> Random()
     {
         return Ok(
-            (await _getRandomQueryHandler.HandleAsync()).Prompt
+            (await _getRandomHandler.HandleAsync()).Prompt
         );
     }
 }
