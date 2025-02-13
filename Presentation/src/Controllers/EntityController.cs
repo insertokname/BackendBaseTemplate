@@ -47,15 +47,8 @@ where CreateCommand : ICreateCommand<E>
         {
             return BadRequest();
         }
-        try
-        {
-            await _deleteByIdCommandHandler.HandleAsync(command);
-            return Ok();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
+        await _deleteByIdCommandHandler.HandleAsync(command);
+        return Ok();
     }
 
     [Authorize]

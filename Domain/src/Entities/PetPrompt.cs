@@ -7,7 +7,7 @@ public class PetPrompt : Entity
 {
     public string Prompt { get; set; } = null!;
 
-    private PetPrompt() : base(Guid.Empty) { }
+    protected PetPrompt() : base(Guid.Empty) { }
 
     public PetPrompt(Guid id, string prompt) : base(id)
     {

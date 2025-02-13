@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -29,21 +29,26 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
     [HttpGet]
     [Route("verify")]
     [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
-    public async Task<ActionResult<bool>> Verify([FromBody] VerifyQuestionQuery query)
+    public async Task<ActionResult<bool>> Verify([FromBody] VerifyQuestionCommand command)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        try
+
+        bool verifyResult;
+        bool isAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
+        var userIdClaim = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!isAuthenticated || !Guid.TryParse(userIdClaim, out var userId))
         {
-	    var verify = await _verifyHandler.HandleAsync(query);
-            return Ok(new {IsCorrect = verify});
+            verifyResult = await _verifyHandler.HandleAsync(command, null);
         }
-        catch (NotFoundException)
+        else
         {
-            return NotFound();
+            verifyResult = await _verifyHandler.HandleAsync(command, userId);
         }
+
+        return Ok(new { IsCorrect = verifyResult });
     }
 
     [HttpGet]

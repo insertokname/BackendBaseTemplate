@@ -3,9 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.RateLimiting;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
+using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Data;
@@ -138,6 +138,24 @@ builder.Services.AddRateLimiter(options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+
+        var exceptionHandlerFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+        var exception = exceptionHandlerFeature?.Error;
+
+        var responseMessage = app.Environment.IsDevelopment()
+            ? exception?.Message
+            : "An unexpected error occurred. Please try again later.";
+
+        await context.Response.WriteAsync("{\"error\": \"" + responseMessage + "\"}");
+    });
+});
 
 //Try to migrate any changes done to the database
 using (var scope = app.Services.CreateScope())

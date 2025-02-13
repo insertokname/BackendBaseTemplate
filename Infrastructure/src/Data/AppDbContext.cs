@@ -21,9 +21,9 @@ public class AppDbContext : DbContext
     {
         optionsBuilder.UseNpgsql(
             $"Host={_secretsManager.DbHost};" +
-            $"Port={_secretsManager.DbPort};"+
-            $"Username={_secretsManager.DbUsername};"+
-            $"Password={_secretsManager.DbPassword};"+
+            $"Port={_secretsManager.DbPort};" +
+            $"Username={_secretsManager.DbUsername};" +
+            $"Password={_secretsManager.DbPassword};" +
             $"Database={_secretsManager.DbName}");
     }
 
@@ -32,6 +32,11 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Question>(question =>
         {
             question.OwnsOne(x => x.Answers);
+        });
+
+        modelBuilder.Entity<User>(user =>
+        {
+            user.OwnsMany(u => u.AnsweredQuestions);
         });
     }
 }

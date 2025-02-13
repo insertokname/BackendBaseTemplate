@@ -1,6 +1,6 @@
-namespace BackendOlimpiadaIsto.application.Query.Questions;
+namespace BackendOlimpiadaIsto.application.Commands.Questions;
 
-public class VerifyQuestionQuery
+public class VerifyQuestionCommand
 {
     public required Guid QuestionId { get; set; }
     public required int GivenAnswerIndex { get; set; }

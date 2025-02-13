@@ -77,14 +77,7 @@ public class UserController : ControllerBase
         {
             return BadRequest();
         }
-        try
-        {
             await _deleteHandler.HandleAsync(command);
             return Ok();
-        }
-        catch (NotFoundException)
-        {
-            return NotFound();
-        }
     }
 }
