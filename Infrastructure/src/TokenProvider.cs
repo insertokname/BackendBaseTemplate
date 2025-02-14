@@ -25,9 +25,14 @@ public class TokenProvider
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(
-            [
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            ]),
+                user.IsAdmin ?
+                [
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, "Admin")
+                ]
+                :
+                [new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),]
+            ),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(_secretsManager.JwtExpirationInMinutes)),
             SigningCredentials = credentials,
             Issuer = _secretsManager.JwtIssuer,

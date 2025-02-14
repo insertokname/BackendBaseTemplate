@@ -26,7 +26,7 @@ where CreateCommand : ICreateCommand<E>
         _getAllHandler = getAllHandler;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<E>> Post([FromBody] CreateCommand command)
     {
@@ -37,7 +37,7 @@ where CreateCommand : ICreateCommand<E>
         return Ok(await _createHandler.HandleAsync(command));
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     public async Task<ActionResult<Question>> Delete([FromBody] DeleteByIdCommand command)
     {
@@ -49,7 +49,7 @@ where CreateCommand : ICreateCommand<E>
         return Ok();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Question>>> GetAll()
     {

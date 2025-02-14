@@ -1,3 +1,4 @@
+using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
@@ -22,7 +23,7 @@ public class LoginUserHandler
         _secretsManager = secretsManager;
     }
 
-    public async Task<LoginUserResult> HandleAsync(LoginUserCommand command)
+    public async Task<string> HandleAsync(LoginUserCommand command)
     {
         User? user = await _userRepository.GetQueryable().FirstOrDefaultAsync(u =>
             u.Username.Equals(command.Username)
@@ -31,29 +32,24 @@ public class LoginUserHandler
         if (command.Username == _secretsManager.DefaultAdminUsername &&
             command.Password == _secretsManager.DefaultAdminPassword)
         {
-            return new LoginUserResult.Ok(
-                _tokenProvider.Create(
+            return _tokenProvider.Create(
                     new User(
                         _secretsManager.DefaultAdminGuid,
                         command.Username,
-                        command.Password
+                        command.Password,
+                        isAdmin: true
                     )
-                )
-            );
+                );
         }
 
         if (user == null)
-        {
-            return new LoginUserResult.NoUsernameFound();
-        }
+            throw new InvalidCredentialsException();
+
 
         if (BCrypt.Net.BCrypt.EnhancedVerify(command.Password, user.Password))
-        {
-            return new LoginUserResult.Ok(_tokenProvider.Create(user));
-        }
+            return _tokenProvider.Create(user);
         else
-        {
-            return new LoginUserResult.IncorectPassword();
-        }
+            throw new InvalidCredentialsException();
+
     }
 }

@@ -7,6 +7,7 @@ using BackendOlimpiadaIsto.application.Commands.Questions;
 using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.Questions;
+using BackendOlimpiadaIsto.application.Query.Users;
 using BackendOlimpiadaIsto.domain.Entities;
 using BackendOlimpiadaIsto.infrastructure;
 using BackendOlimpiadaIsto.infrastructure.Data;
@@ -65,6 +66,9 @@ builder.Services.AddScoped(typeof(GetRandomQuestionHandler));
 
 builder.Services.AddScoped(typeof(LoginUserHandler));
 builder.Services.AddScoped(typeof(CreateUserHandler));
+builder.Services.AddScoped(typeof(SetUserAdminHandler));
+builder.Services.AddScoped(typeof(GetUserByIdHandler));
+
 
 builder.Services.AddSingleton(typeof(TokenProvider));
 
