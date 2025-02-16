@@ -81,7 +81,7 @@ public class UserController : ControllerBase
         }
         catch (InvalidCredentialsException)
         {
-            return BadRequest("Given bad username or password!");
+            return BadRequest(new { Error = "Given bad username or password!" });
         }
     }
 
