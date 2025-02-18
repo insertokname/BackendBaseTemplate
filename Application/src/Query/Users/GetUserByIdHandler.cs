@@ -14,11 +14,11 @@ public class GetUserByIdHandler
         _userRepository = userRepository;
     }
 
-    public async Task<User> HandleAsync(GetUserByIdCommand command)
+    public async Task<User> HandleAsync(GetUserByIdQuery query)
     {
-        User? user = await _userRepository.GetByIdAsync(command.UserId);
+        User? user = await _userRepository.GetByIdAsync(query.UserId);
         if (user == null)
-            throw new ArgumentException($"No user found by id {command.UserId}");
+            throw new ArgumentException($"No user found by id {query.UserId}");
         return user;
     }
 }

@@ -5,6 +5,7 @@ using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.Users;
 using BackendOlimpiadaIsto.domain.Entities;
+using domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -20,13 +21,15 @@ public class UserController : ControllerBase
     public readonly GetAllHandler<User> _getAllHandler;
     public readonly SetUserAdminHandler _setUserAdminHandler;
     public readonly GetUserByIdHandler _getUserByIdHandler;
+    public readonly GetUserStatsHandler _getUserStatsHandler;
     public UserController(
         LoginUserHandler loginUserHandler,
         CreateUserHandler createHandler,
         DeleteByIdHandler<User> deleteHandler,
         GetAllHandler<User> getAllHandler,
         SetUserAdminHandler makeUserAdminHandler,
-        GetUserByIdHandler getUserByIdHandler
+        GetUserByIdHandler getUserByIdHandler,
+        GetUserStatsHandler getUserStatsHandler
     )
     {
         _loginUserHandler = loginUserHandler;
@@ -35,9 +38,10 @@ public class UserController : ControllerBase
         _getAllHandler = getAllHandler;
         _setUserAdminHandler = makeUserAdminHandler;
         _getUserByIdHandler = getUserByIdHandler;
+        _getUserStatsHandler = getUserStatsHandler;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser([FromBody] CreateUserCommand command)
     {
@@ -104,7 +108,7 @@ public class UserController : ControllerBase
         var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (Guid.TryParse(currentUserId, out var userId))
         {
-            User user = await _getUserByIdHandler.HandleAsync(new GetUserByIdCommand { UserId = userId });
+            User user = await _getUserByIdHandler.HandleAsync(new GetUserByIdQuery { UserId = userId });
             return Ok(
                 new
                 {
@@ -117,17 +121,35 @@ public class UserController : ControllerBase
         return Forbid();
     }
 
+    [Authorize]
+    [HttpGet]
+    [Route("Stats")]
+    public async Task<ActionResult<UserStats>> GetStats()
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (Guid.TryParse(currentUserId, out var userId))
+        {
+            UserStats userStats = await _getUserStatsHandler.HandleAsync(userId);
+            return Ok(userStats);
+        }
+        return Forbid();
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpGet]
     [Route("ById")]
-    public async Task<ActionResult<User>> GetById([FromBody] GetUserByIdCommand command)
+    public async Task<ActionResult<User>> GetById([FromBody] GetUserByIdQuery query)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
 
-        return Ok(await _getUserByIdHandler.HandleAsync(command));
+        return Ok(await _getUserByIdHandler.HandleAsync(query));
     }
 
     [Authorize]

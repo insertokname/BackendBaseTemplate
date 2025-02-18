@@ -51,11 +51,11 @@ public class VerifyQuestionHandler
         if (answeredQuestion == null)
         {
             answeredQuestion =
-                new AnsweredQuestion(command.QuestionId, [], false);
+                new AnsweredQuestion(command.QuestionId, [], null);
             user.AnsweredQuestions.Add(answeredQuestion);
         }
 
-        if (answeredQuestion.IsFinished)
+        if (answeredQuestion.FinishedDate != null)
             throw new ArgumentException("Question already answered corectly!");
 
 
@@ -63,9 +63,9 @@ public class VerifyQuestionHandler
         {
             answeredQuestion.Attempts.Add(command.GivenAnswerIndex);
         }
-        if (answeredQuestion.IsFinished != isCorrect)
+        if (isCorrect)
         {
-            answeredQuestion.IsFinished = isCorrect;
+            answeredQuestion.FinishedDate = DateTime.UtcNow;
         }
 
         _userRepository.Update(user);

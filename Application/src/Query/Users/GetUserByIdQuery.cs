@@ -1,6 +1,6 @@
 namespace BackendOlimpiadaIsto.application.Query.Users;
 
-public class GetUserByIdCommand
+public class GetUserByIdQuery
 {
     public required Guid UserId { get; set; }
 }

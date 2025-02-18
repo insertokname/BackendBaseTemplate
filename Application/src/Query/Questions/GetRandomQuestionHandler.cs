@@ -36,7 +36,7 @@ public class GetRandomQuestionHandler
             var user = await _userRepository.GetByIdAsync(userId);
             if (user == null)
                 throw new NotFoundException($"user not found for the given id: {userId}");
-            var completedQuestionIds = user.AnsweredQuestions.Where(aq => aq.IsFinished).Select(aq => aq.QuestionId);
+            var completedQuestionIds = user.AnsweredQuestions.Where(aq => aq.FinishedDate != null).Select(aq => aq.QuestionId);
             queryable = _questionRepository.GetQueryable().Where(q => !completedQuestionIds.Any(qid => qid == q.Id));
         }
 
