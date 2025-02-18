@@ -30,11 +30,10 @@ public class GetUserStatsHandler
         int maxStreak = 0;
         int currentStreak = 0;
 
-        DateTime today = DateTime.UtcNow.Date;
-        DateTime expected = (finishedDates.Last() == today) ? today : today.AddDays(-1);
-
         if (finishedDates.Any())
         {
+            DateTime today = DateTime.UtcNow.Date;
+            DateTime expected = (finishedDates.Last() == today) ? today : today.AddDays(-1);
             int tempStreak = 1;
 
             for (int i = 1; i < finishedDates.Count; i++)
