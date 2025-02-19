@@ -69,6 +69,7 @@ builder.Services.AddScoped(typeof(CreateUserHandler));
 builder.Services.AddScoped(typeof(SetUserAdminHandler));
 builder.Services.AddScoped(typeof(GetUserByIdHandler));
 builder.Services.AddScoped(typeof(GetUserStatsHandler));
+builder.Services.AddScoped(typeof(GetAnsweredQuestionDetailsHandler));
 
 
 builder.Services.AddSingleton(typeof(TokenProvider));

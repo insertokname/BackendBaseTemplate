@@ -22,6 +22,7 @@ public class UserController : ControllerBase
     public readonly SetUserAdminHandler _setUserAdminHandler;
     public readonly GetUserByIdHandler _getUserByIdHandler;
     public readonly GetUserStatsHandler _getUserStatsHandler;
+    public readonly GetAnsweredQuestionDetailsHandler _getAnsweredQuestionDetailsHandler;
     public UserController(
         LoginUserHandler loginUserHandler,
         CreateUserHandler createHandler,
@@ -29,7 +30,8 @@ public class UserController : ControllerBase
         GetAllHandler<User> getAllHandler,
         SetUserAdminHandler makeUserAdminHandler,
         GetUserByIdHandler getUserByIdHandler,
-        GetUserStatsHandler getUserStatsHandler
+        GetUserStatsHandler getUserStatsHandler,
+        GetAnsweredQuestionDetailsHandler getAnsweredQuestionDetailsHandler
     )
     {
         _loginUserHandler = loginUserHandler;
@@ -39,6 +41,7 @@ public class UserController : ControllerBase
         _setUserAdminHandler = makeUserAdminHandler;
         _getUserByIdHandler = getUserByIdHandler;
         _getUserStatsHandler = getUserStatsHandler;
+        _getAnsweredQuestionDetailsHandler = getAnsweredQuestionDetailsHandler;
     }
 
     [Authorize(Roles = "Admin")]
@@ -117,6 +120,28 @@ public class UserController : ControllerBase
                     AnsweredQuestion = user.AnsweredQuestions
                 }
             );
+        }
+        return Forbid();
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("AnsweredQuestionDetails")]
+    public async Task<ActionResult<UserStats>> GetAnsweredQuestionDetails([FromBody] GetAnsweredQuestionDetailsQuery query)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (Guid.TryParse(currentUserId, out var userId))
+        {
+            AnsweredQuestion? answeredQuestion = await _getAnsweredQuestionDetailsHandler.HandleAsync(query, userId);
+            if (answeredQuestion == null)
+            {
+                return Ok(new AnsweredQuestion(query.questionId, [], null));
+            }
+            return Ok(answeredQuestion);
         }
         return Forbid();
     }
