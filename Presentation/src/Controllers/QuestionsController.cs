@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Questions;
+using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
 using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.domain.Entities;
@@ -42,6 +43,7 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
         if (!isAuthenticated || !Guid.TryParse(userIdClaim, out var userId))
         {
             verifyResult = await _verifyHandler.HandleAsync(command, null);
+
         }
         else
         {
@@ -65,7 +67,18 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
         }
         else
         {
-            randomQuestion = await _getRandomHandler.HandleAsync(userId);
+            try
+            {
+                randomQuestion = await _getRandomHandler.HandleAsync(userId);
+            }
+            catch (AlreadyAnsweredDailyQuestionException)
+            {
+                return BadRequest(new
+                {
+                    Error = "The daily question was already answered today!",
+                    AlreadyAnsweredToday = true
+                });
+            }
         }
         
         return Ok(

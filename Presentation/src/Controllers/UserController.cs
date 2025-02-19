@@ -117,7 +117,9 @@ public class UserController : ControllerBase
                 {
                     Id = user.Id,
                     Username = user.Username,
-                    AnsweredQuestion = user.AnsweredQuestions
+                    AnsweredQuestion = user.AnsweredQuestions,
+                    LastAnswerdQuestionStartTime = user.LastAnswerdQuestionStartTime,
+                    LastAnsweredQuestionId = user.LastAnsweredQuestionId
                 }
             );
         }

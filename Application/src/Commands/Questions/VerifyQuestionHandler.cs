@@ -31,19 +31,26 @@ public class VerifyQuestionHandler
         var question = await _questionRepository.GetByIdAsync(command.QuestionId);
         if (question == null)
             throw new NotFoundException($"Question not found for the given id: {command.QuestionId}");
-        
         if (!(0 <= command.GivenAnswerIndex && command.GivenAnswerIndex < question.Answers.Answers.Count()))
             throw new ArgumentException($"Give bad answer index: {command.GivenAnswerIndex}!Out of bounds! (0,{question.Answers.Answers.Count() - 1})");
-        
 
         bool isCorrect = question.Answers.CorrectAnswerIndex == command.GivenAnswerIndex;
         if (userId == null || userId == _secretsManager.DefaultAdminGuid)
             return isCorrect;
-        
-
-        var user = await _userRepository.GetByIdAsync(userId);
+        User? user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
             throw new NotFoundException($"user not found for the given id: {userId}");
+
+        if (user.LastAnswerdQuestionStartTime == null
+         || user.LastAnswerdQuestionStartTime < DateTime.UtcNow.Date)
+        {
+            user.LastAnswerdQuestionStartTime = DateTime.UtcNow.Date;
+            user.LastAnsweredQuestionId = command.QuestionId;
+        }
+        else if (user.LastAnsweredQuestionId != command.QuestionId)
+        {
+            throw new ForbiddenQuestionAccessException();
+        }
 
 
         var answeredQuestion = user.AnsweredQuestions
