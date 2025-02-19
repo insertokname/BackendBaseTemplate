@@ -3,6 +3,7 @@ using BackendOlimpiadaIsto.application.Commands.GenericCommands;
 using BackendOlimpiadaIsto.application.Commands.Users;
 using BackendOlimpiadaIsto.application.Exceptions;
 using BackendOlimpiadaIsto.application.Query.GenericQueries;
+using BackendOlimpiadaIsto.application.Query.Questions;
 using BackendOlimpiadaIsto.application.Query.Users;
 using BackendOlimpiadaIsto.domain.Entities;
 using domain.ValueObjects;
@@ -23,6 +24,8 @@ public class UserController : ControllerBase
     public readonly GetUserByIdHandler _getUserByIdHandler;
     public readonly GetUserStatsHandler _getUserStatsHandler;
     public readonly GetAnsweredQuestionDetailsHandler _getAnsweredQuestionDetailsHandler;
+    public readonly IsDailyQuestionAvailableHandler _isDailyQuestionAvailableHandler;
+
     public UserController(
         LoginUserHandler loginUserHandler,
         CreateUserHandler createHandler,
@@ -31,7 +34,8 @@ public class UserController : ControllerBase
         SetUserAdminHandler makeUserAdminHandler,
         GetUserByIdHandler getUserByIdHandler,
         GetUserStatsHandler getUserStatsHandler,
-        GetAnsweredQuestionDetailsHandler getAnsweredQuestionDetailsHandler
+        GetAnsweredQuestionDetailsHandler getAnsweredQuestionDetailsHandler,
+        IsDailyQuestionAvailableHandler isDailyQuestionAvailableHandler
     )
     {
         _loginUserHandler = loginUserHandler;
@@ -42,6 +46,7 @@ public class UserController : ControllerBase
         _getUserByIdHandler = getUserByIdHandler;
         _getUserStatsHandler = getUserStatsHandler;
         _getAnsweredQuestionDetailsHandler = getAnsweredQuestionDetailsHandler;
+        _isDailyQuestionAvailableHandler = isDailyQuestionAvailableHandler;
     }
 
     [Authorize(Roles = "Admin")]
@@ -122,6 +127,26 @@ public class UserController : ControllerBase
                     LastAnsweredQuestionId = user.LastAnsweredQuestionId
                 }
             );
+        }
+        return Forbid();
+    }
+
+    [Authorize]
+    [HttpGet]
+    [Route("IsDailyQuestionAvailable")]
+    public async Task<ActionResult<UserStats>> IsDailyQuestionAvailable()
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
+        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (Guid.TryParse(currentUserId, out var userId))
+        {
+            return Ok(new
+            {
+                value = await _isDailyQuestionAvailableHandler.HandleAsync(userId)
+            });
         }
         return Forbid();
     }
