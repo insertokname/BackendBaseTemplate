@@ -49,7 +49,7 @@ public class UserController : ControllerBase
         _isDailyQuestionAvailableHandler = isDailyQuestionAvailableHandler;
     }
 
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<User>> CreateUser([FromBody] CreateUserCommand command)
     {

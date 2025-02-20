@@ -19,7 +19,7 @@ public class CreateUserHandler
     {
         string sanitizedUsername = command.Username.Trim();
         if (sanitizedUsername.Length < 3 || sanitizedUsername.Length > 30 ||
-            !Regex.IsMatch(sanitizedUsername, "^[a-zA-Z0-9_]+$"))
+            !Regex.IsMatch(sanitizedUsername, "^[a-zA-Z0-9_ ăâîțșĂÂÎȚȘ]+$"))
         {
             throw new InvalidUsernameException(command.Username);
         }
