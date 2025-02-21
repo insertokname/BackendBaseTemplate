@@ -64,7 +64,7 @@ public class UserController : ControllerBase
                 new
                 {
                     Error = "Username was already taken!",
-                    UsernameTake = true
+                    UsernameTaken = true
                 }
             );
 
