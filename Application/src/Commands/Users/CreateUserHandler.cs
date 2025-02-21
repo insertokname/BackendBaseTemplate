@@ -18,10 +18,13 @@ public class CreateUserHandler
     public async Task<User> HandleAsync(CreateUserCommand command)
     {
         string sanitizedUsername = command.Username.Trim();
-        if (sanitizedUsername.Length < 3 || sanitizedUsername.Length > 30 ||
-            !Regex.IsMatch(sanitizedUsername, "^[a-zA-Z0-9_ ăâîțșĂÂÎȚȘ]+$"))
+        if (sanitizedUsername.Length < 3 || sanitizedUsername.Length > 30)
         {
-            throw new InvalidUsernameException(command.Username);
+            throw new UsernameTooLongException(command.Username);
+        }
+        if (!Regex.IsMatch(sanitizedUsername, "^[a-zA-Z0-9_ ăâîțșĂÂÎȚȘ]+$"))
+        {
+            throw new InvalidUsernameCharacterException(command.Username);
         }
 
         if (_userRepository.GetQueryable().Any(u => u.Username == sanitizedUsername))

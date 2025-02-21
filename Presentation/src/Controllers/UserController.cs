@@ -58,24 +58,34 @@ public class UserController : ControllerBase
             User user = await _createHandler.HandleAsync(command);
             return Ok(user);
         }
-
-
         catch (UsernameTakenException)
         {
             return BadRequest(
                 new
                 {
-                    Error = "Username was already taken!"
+                    Error = "Username was already taken!",
+                    UsernameTakem = true
                 }
             );
 
         }
-        catch (InvalidUsernameException)
+        catch (InvalidUsernameCharacterException)
         {
             return BadRequest(
                 new
                 {
-                    Error = "Bad username!"
+                    Error = "Username contains invalid characters!",
+                    InvalidUsername = true
+                }
+            );
+        }
+        catch (UsernameTooLongException)
+        {
+            return BadRequest(
+                new
+                {
+                    Error = "Username is too long!",
+                    UsernameTooLong = true
                 }
             );
         }
@@ -91,7 +101,7 @@ public class UserController : ControllerBase
             string token = await _loginUserHandler.HandleAsync(command);
             return Ok(new { Token = token });
         }
-        catch (InvalidCredentialsException)
+        catch (BadCredentialsException)
         {
             return BadRequest(new { Error = "Given bad username or password!" });
         }

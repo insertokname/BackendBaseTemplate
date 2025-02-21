@@ -1,11 +1,11 @@
 namespace BackendOlimpiadaIsto.application.Exceptions;
 
-public class InvalidUsernameException : Exception
+public class InvalidUsernameCharacterException : Exception
 {
     public string Username { get; }
 
-    public InvalidUsernameException(string username)
-        : base($"The username '{username}' is invalid!")
+    public InvalidUsernameCharacterException(string username)
+        : base($"The username '{username}' contains a characters that are invalid!")
     {
         Username = username;
     }

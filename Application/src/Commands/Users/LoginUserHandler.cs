@@ -43,13 +43,13 @@ public class LoginUserHandler
         }
 
         if (user == null)
-            throw new InvalidCredentialsException();
+            throw new BadCredentialsException();
 
 
         if (BCrypt.Net.BCrypt.EnhancedVerify(command.Password, user.Password))
             return _tokenProvider.Create(user);
         else
-            throw new InvalidCredentialsException();
+            throw new BadCredentialsException();
 
     }
 }

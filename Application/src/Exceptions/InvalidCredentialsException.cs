@@ -1,9 +1,9 @@
 namespace BackendOlimpiadaIsto.application.Exceptions;
 
-public class InvalidCredentialsException : Exception
+public class BadCredentialsException : Exception
 {
 
-    public InvalidCredentialsException()
+    public BadCredentialsException()
         : base($"The username or password is incorect!")
     {
     }
