@@ -18,7 +18,7 @@ public class CreateUserHandler
     public async Task<User> HandleAsync(CreateUserCommand command)
     {
         string sanitizedUsername = command.Username.Trim();
-        if (sanitizedUsername.Length < 3 || sanitizedUsername.Length > 30)
+        if (sanitizedUsername.Length > 30)
         {
             throw new UsernameTooLongException(command.Username);
         }
