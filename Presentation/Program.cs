@@ -14,7 +14,9 @@ using BackendOlimpiadaIsto.infrastructure.Data;
 using BackendOlimpiadaIsto.infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Rewrite;
 
 var builder = WebApplication.CreateBuilder(args);
 var protocol = builder.Configuration["API_PROTOCOL"]?.ToLower() ?? "http";
@@ -204,6 +206,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+var rewriteOptions = new RewriteOptions()
+    .AddRewrite(@"^articol/([^\.]+)$", "articol/$1.html", skipRemainingRules: true);
+
+app.UseRewriter(rewriteOptions);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Articles")),
+    RequestPath = "/articol"
+});
 
 app.UseRateLimiter();
 

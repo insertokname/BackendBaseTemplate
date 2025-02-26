@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.header-image-container {
+  display: flex;
+  margin-bottom: 80px;
+  gap: 10px;
+  width: 100%;
+  max-height: 650px;
+}
+
+.header-image-figure {
+  flex:1 ;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  text-align: center;
+}
+
+.header-image-figure-child {
+  min-width: 0;
+  height: 100%;
+  object-fit: cover;
+  max-width: 100%;
+}
+
+.header-image-figure-caption {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 5px;
+}
+
+.header-image-single {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-section {
+  margin-bottom: 1.5rem;
+}
+
+.article-section h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.article-section p {
+  margin-bottom: 1rem;
+}
+
+
+.bibliography-section {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ccc;
+}
+
+.bibliography-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.bibliography-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.bibliography-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.bibliography-section ul li a {
+  color: #1a0dab;
+  text-decoration: none;
+}
+
+.bibliography-section ul li a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  .article-section h2 {
+    font-size: 1.1rem;
+  }
+}
