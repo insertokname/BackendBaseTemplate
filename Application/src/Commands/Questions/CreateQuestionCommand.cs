@@ -9,13 +9,15 @@ public class CreateQuestionCommand : ICreateCommand<Question>
     public required string QuestionPrompt { get; set; }
     public required List<string> Answers { get; set; }
     public required int CorrectAnswerIndex { get; set; }
+    public required string Source { get; set; }
 
     public Question CreateEntity()
     {
         return new Question(
             Guid.NewGuid(),
             QuestionPrompt,
-            new AnswerList(Answers, CorrectAnswerIndex)
+            new AnswerList(Answers, CorrectAnswerIndex),
+            Source
         );
     }
 };

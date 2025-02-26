@@ -87,7 +87,7 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
                 Id = randomQuestion.Id,
                 QuestionPrompt = randomQuestion.QuestionPrompt,
                 Answers = randomQuestion.Answers.Answers,
-                QuestionSource = "Made it up"
+                QuestionSource = randomQuestion.Source
             }
         );
     }
