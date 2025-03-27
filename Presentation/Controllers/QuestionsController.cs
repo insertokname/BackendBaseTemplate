@@ -27,7 +27,7 @@ public class QuestionsController : EntityController<Question, CreateQuestionComm
         _verifyHandler = verifyHandler;
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("verify")]
     [EnableRateLimiting("UnauthorizedEndpointRateLimiter")]
     public async Task<ActionResult<bool>> Verify([FromBody] VerifyQuestionCommand command)

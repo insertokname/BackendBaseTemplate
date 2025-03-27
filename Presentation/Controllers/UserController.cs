@@ -91,7 +91,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet]
+    [HttpPost]
     [Route("login")]
     [EnableRateLimiting("LoginRateLimit")]
     public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command)
@@ -162,7 +162,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet]
+    [HttpPost]
     [Route("AnsweredQuestionDetails")]
     public async Task<ActionResult<UserStats>> GetAnsweredQuestionDetails([FromBody] GetAnsweredQuestionDetailsQuery query)
     {
@@ -202,7 +202,7 @@ public class UserController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpGet]
+    [HttpPost]
     [Route("ById")]
     public async Task<ActionResult<User>> GetById([FromBody] GetUserByIdQuery query)
     {
