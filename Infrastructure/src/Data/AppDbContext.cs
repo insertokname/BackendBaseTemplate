@@ -1,7 +1,7 @@
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace BackendOlimpiadaIsto.infrastructure.Data;
+namespace BackendBaseTemplate.infrastructure.Data;
 
 public class AppDbContext : DbContext
 {

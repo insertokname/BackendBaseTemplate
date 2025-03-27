@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace BackendOlimpiadaIsto.infrastructure.Data
+namespace BackendBaseTemplate.infrastructure.Data
 {
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {

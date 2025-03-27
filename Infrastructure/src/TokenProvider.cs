@@ -2,9 +2,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
 using System.Text;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.domain.Entities;
 
-namespace BackendOlimpiadaIsto.infrastructure;
+namespace BackendBaseTemplate.infrastructure;
 
 public class TokenProvider
 {

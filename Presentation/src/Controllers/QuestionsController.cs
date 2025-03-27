@@ -1,14 +1,14 @@
 using System.Security.Claims;
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.Questions;
-using BackendOlimpiadaIsto.application.Exceptions;
-using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.Questions;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.application.Commands.Questions;
+using BackendBaseTemplate.application.Exceptions;
+using BackendBaseTemplate.application.Query.GenericQueries;
+using BackendBaseTemplate.application.Query.Questions;
+using BackendBaseTemplate.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace BackendOlimpiadaIsto.presentation.Controllers;
+namespace BackendBaseTemplate.presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class QuestionsController : EntityController<Question, CreateQuestionCommand>

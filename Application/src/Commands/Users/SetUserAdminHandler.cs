@@ -1,8 +1,8 @@
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure;
+using BackendBaseTemplate.infrastructure.Repositories;
 
-namespace BackendOlimpiadaIsto.application.Commands.Users;
+namespace BackendBaseTemplate.application.Commands.Users;
 
 
 public class SetUserAdminHandler

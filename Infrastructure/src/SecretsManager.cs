@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace BackendOlimpiadaIsto.infrastructure;
+namespace BackendBaseTemplate.infrastructure;
 
 public class SecretsManager
 {

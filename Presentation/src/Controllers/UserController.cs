@@ -1,17 +1,17 @@
 using System.Security.Claims;
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.Users;
-using BackendOlimpiadaIsto.application.Exceptions;
-using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.Questions;
-using BackendOlimpiadaIsto.application.Query.Users;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.application.Commands.Users;
+using BackendBaseTemplate.application.Exceptions;
+using BackendBaseTemplate.application.Query.GenericQueries;
+using BackendBaseTemplate.application.Query.Questions;
+using BackendBaseTemplate.application.Query.Users;
+using BackendBaseTemplate.domain.Entities;
 using domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace BackendOlimpiadaIsto.presentation.Controllers;
+namespace BackendBaseTemplate.presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class UserController : ControllerBase

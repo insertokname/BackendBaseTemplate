@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.application.Exceptions;
+namespace BackendBaseTemplate.application.Exceptions;
 
 public class InvalidUsernameCharacterException : Exception
 {

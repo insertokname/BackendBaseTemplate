@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using BackendOlimpiadaIsto.infrastructure.Data;
+using BackendBaseTemplate.infrastructure.Data;
 
-namespace BackendOlimpiadaIsto.infrastructure.Repositories;
+namespace BackendBaseTemplate.infrastructure.Repositories;
 public interface IRepository<T> where T : class
 {
     Task<IEnumerable<T>> GetAllAsync();

@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.domain.Entities;
+namespace BackendBaseTemplate.domain.Entities;
 
 
 public class PetPrompt : Entity

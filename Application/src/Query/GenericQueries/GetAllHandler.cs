@@ -1,7 +1,7 @@
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure.Repositories;
 
-namespace BackendOlimpiadaIsto.application.Query.GenericQueries;
+namespace BackendBaseTemplate.application.Query.GenericQueries;
 
 
 public class GetAllHandler<E>

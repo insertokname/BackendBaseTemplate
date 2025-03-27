@@ -1,10 +1,10 @@
-using BackendOlimpiadaIsto.application.Exceptions;
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.application.Exceptions;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure;
+using BackendBaseTemplate.infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
-namespace BackendOlimpiadaIsto.application.Query.Questions;
+namespace BackendBaseTemplate.application.Query.Questions;
 
 public class GetRandomQuestionHandler
 {

@@ -1,8 +1,8 @@
-using BackendOlimpiadaIsto.application.Exceptions;
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.application.Exceptions;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure.Repositories;
 
-namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
+namespace BackendBaseTemplate.application.Commands.GenericCommands;
 
 
 public class DeleteByIdHandler<E>

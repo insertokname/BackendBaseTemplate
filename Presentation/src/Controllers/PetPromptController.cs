@@ -1,11 +1,11 @@
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.PetPrompts;
-using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.application.Commands.PetPrompts;
+using BackendBaseTemplate.application.Query.GenericQueries;
+using BackendBaseTemplate.domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
-namespace BackendOlimpiadaIsto.presentation.Controllers;
+namespace BackendBaseTemplate.presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class PetPromptsController : EntityController<PetPrompt, CreatePetPromptCommand>

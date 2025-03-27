@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.application.Commands.Questions;
+namespace BackendBaseTemplate.application.Commands.Questions;
 
 public class VerifyQuestionCommand
 {

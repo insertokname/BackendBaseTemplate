@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.infrastructure;
+namespace BackendBaseTemplate.infrastructure;
 
 public static class Constants
 {

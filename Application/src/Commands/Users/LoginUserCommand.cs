@@ -1,6 +1,6 @@
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.domain.Entities;
 
-namespace BackendOlimpiadaIsto.application.Commands.Users;
+namespace BackendBaseTemplate.application.Commands.Users;
 
 
 public class LoginUserCommand

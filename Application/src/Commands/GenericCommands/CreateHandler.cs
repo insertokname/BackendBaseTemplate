@@ -1,7 +1,7 @@
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure.Repositories;
 
-namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
+namespace BackendBaseTemplate.application.Commands.GenericCommands;
 
 public class CreateHandler<CreateCommand, E>
 where CreateCommand : ICreateCommand<E>

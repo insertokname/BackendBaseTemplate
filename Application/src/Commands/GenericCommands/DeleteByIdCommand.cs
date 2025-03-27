@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
+namespace BackendBaseTemplate.application.Commands.GenericCommands;
 
 public class DeleteByIdCommand
 {

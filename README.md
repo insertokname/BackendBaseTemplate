@@ -1,4 +1,4 @@
-This is a small api backend to run locally on my server 
+Backend api template
 
 ### Design Patterns Employed
 
@@ -32,15 +32,15 @@ This is a small api backend to run locally on my server
 
 ##### Running api and database toghether
 
-- clone the repo `git clone https://github.com/insertokname/BackendOlimpiadaIsto.git`
-- cd into it `cd BackendOlimpiadaIsto`
+- clone the repo `git clone https://github.com/insertokname/BackendBaseTemplate.git`
+- cd into it `cd BackendBaseTemplate`
 - make a file name `.env` in the directory containing the following (these will be the default logins for the admin account of the api):
 ```
 BACKEND_ADMIN_USERNAME=admin
 BACKEND_ADMIN_PASSWORD=AVeryStrongPassword!
 ```
 - *make sure docker desktop is running! and docker-compose command is installed*
-- run `docker-compose --profile http up -d`. This will start the api in http mode and will also start the database service. You can see your running containers in docker desktop or by running `docker-compose ps`. You can stop the container by running `docker-compose --profile http down` or by going in the docker desktop app and stopping them manually. You can also reset the database by deleting the data under `~/.BackendOlimpiadaIsto/postgres` OR `%USERPROFILE%\BackendOlimpiadaIsto\postgres`
+- run `docker-compose --profile http up -d`. This will start the api in http mode and will also start the database service. You can see your running containers in docker desktop or by running `docker-compose ps`. You can stop the container by running `docker-compose --profile http down` or by going in the docker desktop app and stopping them manually. You can also reset the database by deleting the data under `~/.BackendBaseTemplate/postgres` OR `%USERPROFILE%\BackendBaseTemplate\postgres`
 - If you are planning on using this for production:
     - **change the username and the password** in the `.env` file
     - don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
@@ -50,7 +50,7 @@ BACKEND_ADMIN_PASSWORD=AVeryStrongPassword!
 
 I recomend running the database and the api separatley for this. You will require docker and docker-compose just like the running part and also [Dotnet 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 
-- Same as the first option clone the repo and cd into it with `git clone https://github.com/insertokname/BackendOlimpiadaIsto.git` and `cd BackendOlimpiadaIsto`
+- Same as the first option clone the repo and cd into it with `git clone https://github.com/insertokname/BackendBaseTemplate.git` and `cd BackendBaseTemplate`
 - make sure the postgressql database is running with `docker-compose up db -d` (you can also stop the db with `docker-compose down db`)
 - cd into the api layer `cd Presentation` 
 - run the api `dotnet run`

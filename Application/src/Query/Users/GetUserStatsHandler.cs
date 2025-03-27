@@ -1,8 +1,8 @@
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure.Repositories;
 using domain.ValueObjects;
 
-namespace BackendOlimpiadaIsto.application.Query.Users;
+namespace BackendBaseTemplate.application.Query.Users;
 
 
 public class GetUserStatsHandler

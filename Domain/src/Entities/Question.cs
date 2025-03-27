@@ -1,6 +1,6 @@
 using domain.ValueObjects;
 
-namespace BackendOlimpiadaIsto.domain.Entities;
+namespace BackendBaseTemplate.domain.Entities;
 
 
 public class Question : Entity

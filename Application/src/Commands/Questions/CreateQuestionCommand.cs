@@ -1,8 +1,8 @@
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.domain.Entities;
 using domain.ValueObjects;
 
-namespace BackendOlimpiadaIsto.application.Commands.Questions;
+namespace BackendBaseTemplate.application.Commands.Questions;
 
 public class CreateQuestionCommand : ICreateCommand<Question>
 {

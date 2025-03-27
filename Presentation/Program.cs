@@ -2,16 +2,16 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.RateLimiting;
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Commands.Questions;
-using BackendOlimpiadaIsto.application.Commands.Users;
-using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.application.Query.Questions;
-using BackendOlimpiadaIsto.application.Query.Users;
-using BackendOlimpiadaIsto.domain.Entities;
-using BackendOlimpiadaIsto.infrastructure;
-using BackendOlimpiadaIsto.infrastructure.Data;
-using BackendOlimpiadaIsto.infrastructure.Repositories;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.application.Commands.Questions;
+using BackendBaseTemplate.application.Commands.Users;
+using BackendBaseTemplate.application.Query.GenericQueries;
+using BackendBaseTemplate.application.Query.Questions;
+using BackendBaseTemplate.application.Query.Users;
+using BackendBaseTemplate.domain.Entities;
+using BackendBaseTemplate.infrastructure;
+using BackendBaseTemplate.infrastructure.Data;
+using BackendBaseTemplate.infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -22,8 +22,8 @@ var builder = WebApplication.CreateBuilder(args);
 var protocol = builder.Configuration["API_PROTOCOL"]?.ToLower() ?? "http";
 if (protocol == "https")
 {
-    var certPemPath = "/etc/letsencrypt/live/bangladesh.go.ro/fullchain.pem";
-    var keyPemPath = "/etc/letsencrypt/live/bangladesh.go.ro/privkey.pem";
+    var certPemPath = "/etc/letsencrypt/live/<DOMAIN_NAME>/fullchain.pem";
+    var keyPemPath = "/etc/letsencrypt/live/<DOMAIN_NAME>/privkey.pem";
 
     string fullChain = File.ReadAllText(certPemPath);
     string keyContent = File.ReadAllText(keyPemPath);
@@ -206,17 +206,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var rewriteOptions = new RewriteOptions()
-    .AddRewrite(@"^articol/([^\.]+)$", "articol/$1.html", skipRemainingRules: true);
-
-app.UseRewriter(rewriteOptions);
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Articles")),
-    RequestPath = "/articol"
-});
 
 app.UseRateLimiter();
 

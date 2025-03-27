@@ -1,7 +1,7 @@
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.domain.Entities;
 
-namespace BackendOlimpiadaIsto.application.Commands.PetPrompts;
+namespace BackendBaseTemplate.application.Commands.PetPrompts;
 
 public class CreatePetPromptCommand : ICreateCommand<PetPrompt>
 {

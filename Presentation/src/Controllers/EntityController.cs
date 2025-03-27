@@ -1,10 +1,10 @@
-using BackendOlimpiadaIsto.application.Commands.GenericCommands;
-using BackendOlimpiadaIsto.application.Query.GenericQueries;
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.application.Commands.GenericCommands;
+using BackendBaseTemplate.application.Query.GenericQueries;
+using BackendBaseTemplate.domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BackendOlimpiadaIsto.presentation.Controllers;
+namespace BackendBaseTemplate.presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class EntityController<E, CreateCommand> : ControllerBase

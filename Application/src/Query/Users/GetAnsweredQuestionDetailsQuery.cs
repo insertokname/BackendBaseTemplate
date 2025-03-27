@@ -1,4 +1,4 @@
-namespace BackendOlimpiadaIsto.application.Query.Users;
+namespace BackendBaseTemplate.application.Query.Users;
 
 public class GetAnsweredQuestionDetailsQuery
 {

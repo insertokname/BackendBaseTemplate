@@ -1,6 +1,6 @@
-using BackendOlimpiadaIsto.domain.Entities;
+using BackendBaseTemplate.domain.Entities;
 
-namespace BackendOlimpiadaIsto.application.Commands.GenericCommands;
+namespace BackendBaseTemplate.application.Commands.GenericCommands;
 
 public interface ICreateCommand<E>
 where E : Entity
