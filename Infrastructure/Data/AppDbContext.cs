@@ -1,13 +1,11 @@
 using BackendBaseTemplate.domain.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace BackendBaseTemplate.infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
-    public DbSet<Question> Questions { get; set; } = null!;
-    public DbSet<PetPrompt> PetPrompts { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<EntityTemplate> EntityTemplates { get; set; } = null!;
 
     private readonly SecretsManager _secretsManager;
 
@@ -28,14 +26,9 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Question>(question =>
+        modelBuilder.Entity<EntityTemplate>(et =>
         {
-            question.OwnsOne(x => x.Answers);
-        });
-
-        modelBuilder.Entity<User>(user =>
-        {
-            user.OwnsMany(u => u.AnsweredQuestions);
+            et.OwnsOne(e => e.EntityTemplateDataObjects);
         });
     }
 }

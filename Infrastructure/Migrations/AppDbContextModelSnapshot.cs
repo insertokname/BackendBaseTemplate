@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace infrastructure.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -23,38 +23,18 @@ namespace infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.PetPrompt", b =>
+            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.EntityTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Prompt")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PetPrompts");
-                });
-
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.Question", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("QuestionPrompt")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Source")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Questions");
+                    b.ToTable("EntityTemplates");
                 });
 
             modelBuilder.Entity("BackendBaseTemplate.domain.Entities.User", b =>
@@ -65,12 +45,6 @@ namespace infrastructure.Migrations
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastAnswerdQuestionStartTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid?>("LastAnsweredQuestionId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -85,64 +59,27 @@ namespace infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.Question", b =>
+            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.EntityTemplate", b =>
                 {
-                    b.OwnsOne("domain.ValueObjects.AnswerList", "Answers", b1 =>
+                    b.OwnsOne("BackendBaseTemplate.domain.Commands.DataTransferObjects.EntityTemplateDataObject", "EntityTemplateDataObjects", b1 =>
                         {
-                            b1.Property<Guid>("QuestionId")
+                            b1.Property<Guid>("EntityTemplateId")
                                 .HasColumnType("uuid");
 
-                            b1.PrimitiveCollection<List<string>>("Answers")
+                            b1.PrimitiveCollection<List<DateTime>>("TemplateData")
                                 .IsRequired()
-                                .HasColumnType("text[]");
+                                .HasColumnType("timestamp with time zone[]");
 
-                            b1.Property<int>("CorrectAnswerIndex")
-                                .HasColumnType("integer");
+                            b1.HasKey("EntityTemplateId");
 
-                            b1.HasKey("QuestionId");
-
-                            b1.ToTable("Questions");
+                            b1.ToTable("EntityTemplates");
 
                             b1.WithOwner()
-                                .HasForeignKey("QuestionId");
+                                .HasForeignKey("EntityTemplateId");
                         });
 
-                    b.Navigation("Answers")
+                    b.Navigation("EntityTemplateDataObjects")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.User", b =>
-                {
-                    b.OwnsMany("domain.ValueObjects.AnsweredQuestion", "AnsweredQuestions", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer");
-
-                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
-
-                            b1.PrimitiveCollection<List<int>>("Attempts")
-                                .IsRequired()
-                                .HasColumnType("integer[]");
-
-                            b1.Property<DateTime?>("FinishedDate")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<Guid>("QuestionId")
-                                .HasColumnType("uuid");
-
-                            b1.HasKey("UserId", "Id");
-
-                            b1.ToTable("AnsweredQuestion");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.Navigation("AnsweredQuestions");
                 });
 #pragma warning restore 612, 618
         }

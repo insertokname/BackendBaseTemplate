@@ -3,10 +3,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.RateLimiting;
 using BackendBaseTemplate.application.Commands.GenericCommands;
-using BackendBaseTemplate.application.Commands.Questions;
 using BackendBaseTemplate.application.Commands.Users;
 using BackendBaseTemplate.application.Query.GenericQueries;
-using BackendBaseTemplate.application.Query.Questions;
 using BackendBaseTemplate.application.Query.Users;
 using BackendBaseTemplate.domain.Entities;
 using BackendBaseTemplate.infrastructure;
@@ -18,6 +16,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.OpenApi.Models;
+using BackendBaseTemplate.application.Commands.EntityTemplates;
+using BackendBaseTemplate.application.Query.EntityTemplates;
 
 var builder = WebApplication.CreateBuilder(args);
 var protocol = builder.Configuration["API_PROTOCOL"]?.ToLower() ?? "http";
@@ -93,18 +93,13 @@ builder.Services.AddScoped(typeof(DeleteByIdHandler<>));
 builder.Services.AddScoped(typeof(GetAllHandler<>));
 builder.Services.AddScoped(typeof(GetRandomHandler<>));
 
-
-builder.Services.AddScoped(typeof(VerifyQuestionHandler));
-builder.Services.AddScoped(typeof(GetRandomQuestionHandler));
-
 builder.Services.AddScoped(typeof(LoginUserHandler));
 builder.Services.AddScoped(typeof(CreateUserHandler));
 builder.Services.AddScoped(typeof(SetUserAdminHandler));
 builder.Services.AddScoped(typeof(GetUserByIdHandler));
-builder.Services.AddScoped(typeof(GetUserStatsHandler));
-builder.Services.AddScoped(typeof(GetAnsweredQuestionDetailsHandler));
-builder.Services.AddScoped(typeof(IsDailyQuestionAvailableHandler));
 
+builder.Services.AddScoped(typeof(SetNewTemplateDataObjectHandler));
+builder.Services.AddScoped(typeof(GetAllEntityTemplateDataObjectsHandler));
 
 builder.Services.AddSingleton(typeof(TokenProvider));
 

@@ -3,7 +3,6 @@ using BackendBaseTemplate.application.Commands.GenericCommands;
 using BackendBaseTemplate.application.Commands.Users;
 using BackendBaseTemplate.application.Exceptions;
 using BackendBaseTemplate.application.Query.GenericQueries;
-using BackendBaseTemplate.application.Query.Questions;
 using BackendBaseTemplate.application.Query.Users;
 using BackendBaseTemplate.domain.Entities;
 using domain.ValueObjects;
@@ -22,9 +21,6 @@ public class UserController : ControllerBase
     public readonly GetAllHandler<User> _getAllHandler;
     public readonly SetUserAdminHandler _setUserAdminHandler;
     public readonly GetUserByIdHandler _getUserByIdHandler;
-    public readonly GetUserStatsHandler _getUserStatsHandler;
-    public readonly GetAnsweredQuestionDetailsHandler _getAnsweredQuestionDetailsHandler;
-    public readonly IsDailyQuestionAvailableHandler _isDailyQuestionAvailableHandler;
 
     public UserController(
         LoginUserHandler loginUserHandler,
@@ -32,10 +28,7 @@ public class UserController : ControllerBase
         DeleteByIdHandler<User> deleteHandler,
         GetAllHandler<User> getAllHandler,
         SetUserAdminHandler makeUserAdminHandler,
-        GetUserByIdHandler getUserByIdHandler,
-        GetUserStatsHandler getUserStatsHandler,
-        GetAnsweredQuestionDetailsHandler getAnsweredQuestionDetailsHandler,
-        IsDailyQuestionAvailableHandler isDailyQuestionAvailableHandler
+        GetUserByIdHandler getUserByIdHandler
     )
     {
         _loginUserHandler = loginUserHandler;
@@ -44,9 +37,6 @@ public class UserController : ControllerBase
         _getAllHandler = getAllHandler;
         _setUserAdminHandler = makeUserAdminHandler;
         _getUserByIdHandler = getUserByIdHandler;
-        _getUserStatsHandler = getUserStatsHandler;
-        _getAnsweredQuestionDetailsHandler = getAnsweredQuestionDetailsHandler;
-        _isDailyQuestionAvailableHandler = isDailyQuestionAvailableHandler;
     }
 
     // [Authorize(Roles = "Admin")]
@@ -109,7 +99,7 @@ public class UserController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Question>>> GetAll()
+    public async Task<ActionResult<IEnumerable<User>>> GetAll()
     {
         return Ok(await _getAllHandler.HandleAsync());
     }
@@ -132,71 +122,8 @@ public class UserController : ControllerBase
                 {
                     Id = user.Id,
                     Username = user.Username,
-                    AnsweredQuestion = user.AnsweredQuestions,
-                    LastAnswerdQuestionStartTime = user.LastAnswerdQuestionStartTime,
-                    LastAnsweredQuestionId = user.LastAnsweredQuestionId
                 }
             );
-        }
-        return Forbid();
-    }
-
-    [Authorize]
-    [HttpGet]
-    [Route("IsDailyQuestionAvailable")]
-    public async Task<ActionResult<UserStats>> IsDailyQuestionAvailable()
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (Guid.TryParse(currentUserId, out var userId))
-        {
-            return Ok(new
-            {
-                value = await _isDailyQuestionAvailableHandler.HandleAsync(userId)
-            });
-        }
-        return Forbid();
-    }
-
-    [Authorize]
-    [HttpPost]
-    [Route("AnsweredQuestionDetails")]
-    public async Task<ActionResult<UserStats>> GetAnsweredQuestionDetails([FromBody] GetAnsweredQuestionDetailsQuery query)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (Guid.TryParse(currentUserId, out var userId))
-        {
-            AnsweredQuestion? answeredQuestion = await _getAnsweredQuestionDetailsHandler.HandleAsync(query, userId);
-            if (answeredQuestion == null)
-            {
-                return Ok(new AnsweredQuestion(query.questionId, [], null));
-            }
-            return Ok(answeredQuestion);
-        }
-        return Forbid();
-    }
-
-    [Authorize]
-    [HttpGet]
-    [Route("Stats")]
-    public async Task<ActionResult<UserStats>> GetStats()
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
-        var currentUserId = User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (Guid.TryParse(currentUserId, out var userId))
-        {
-            UserStats userStats = await _getUserStatsHandler.HandleAsync(userId);
-            return Ok(userStats);
         }
         return Forbid();
     }
@@ -216,7 +143,7 @@ public class UserController : ControllerBase
 
     [Authorize]
     [HttpDelete]
-    public async Task<ActionResult<Question>> Delete([FromBody] DeleteByIdCommand command)
+    public async Task<ActionResult> Delete([FromBody] DeleteByIdCommand command)
     {
         if (!ModelState.IsValid)
         {

@@ -10,75 +10,78 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace infrastructure.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250206074937_AddPetPrompts")]
-    partial class AddPetPrompts
+    [Migration("20250407181008_BaseStartw")]
+    partial class BaseStartw
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.PetPrompt", b =>
+            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.EntityTemplate", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Prompt")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.ToTable("PetPrompts");
+                    b.ToTable("EntityTemplates");
                 });
 
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.Question", b =>
+            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("QuestionPrompt")
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.Question", b =>
+            modelBuilder.Entity("BackendBaseTemplate.domain.Entities.EntityTemplate", b =>
                 {
-                    b.OwnsOne("domain.ValueObjects.AnswerList", "Answers", b1 =>
+                    b.OwnsOne("BackendBaseTemplate.domain.Commands.DataTransferObjects.EntityTemplateDataObject", "EntityTemplateDataObjects", b1 =>
                         {
-                            b1.Property<Guid>("QuestionId")
+                            b1.Property<Guid>("EntityTemplateId")
                                 .HasColumnType("uuid");
 
-                            b1.PrimitiveCollection<List<string>>("Answers")
+                            b1.PrimitiveCollection<List<DateTime>>("TemplateData")
                                 .IsRequired()
-                                .HasColumnType("text[]");
+                                .HasColumnType("timestamp with time zone[]");
 
-                            b1.Property<int>("CorrectAnswerIndex")
-                                .HasColumnType("integer");
+                            b1.HasKey("EntityTemplateId");
 
-                            b1.HasKey("QuestionId");
-
-                            b1.ToTable("Questions");
+                            b1.ToTable("EntityTemplates");
 
                             b1.WithOwner()
-                                .HasForeignKey("QuestionId");
+                                .HasForeignKey("EntityTemplateId");
                         });
 
-                    b.Navigation("Answers")
+                    b.Navigation("EntityTemplateDataObjects")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

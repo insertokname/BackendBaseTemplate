@@ -67,3 +67,11 @@ docker-compose run --remove-orphans --service-ports --entrypoint certbot certbot
 ```
 - After this certbot will register your domain with Let's encrypt and you will have valid https!
 - You can now run the `docker-compose` command as you normally did but **instead of using `--profile http` use `--profile https`**: `docker-compose --profile https up -d` & `docker-compose --profile https down`
+
+#### Steps to add a new entity:
+
+- Create the new entity derived class inside the Domain/Entities folder
+- Make it's create command, you can either do this by creating your own custom create command or by using the generic commands like create handler as shown for the EntityTemplate class
+- If you decide to make a custom handler you need to add it to dependency injection in the program.cs like so: `builder.Services.AddScoped(typeof(<YOUR_NEW_HANDLER>));`\
+- Last thing is add it in the AppDbContext.cs inside the infrastructre/data folder as a DbSet
+- migrate changes `dotnet ef migrations add <MIGRATION_NAME>`

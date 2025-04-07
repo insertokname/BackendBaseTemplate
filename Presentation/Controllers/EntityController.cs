@@ -39,7 +39,7 @@ where CreateCommand : ICreateCommand<E>
 
     [Authorize(Roles = "Admin")]
     [HttpDelete]
-    public async Task<ActionResult<Question>> Delete([FromBody] DeleteByIdCommand command)
+    public async Task<ActionResult<E>> Delete([FromBody] DeleteByIdCommand command)
     {
         if (!ModelState.IsValid)
         {
@@ -51,7 +51,7 @@ where CreateCommand : ICreateCommand<E>
 
     [Authorize(Roles = "Admin")]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Question>>> GetAll()
+    public async Task<ActionResult<IEnumerable<E>>> GetAll()
     {
         return Ok(await _getAllHandler.HandleAsync());
     }
