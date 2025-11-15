@@ -57,6 +57,10 @@ GOOGLE_OAUTH_SECRET="{YOUR_GOOGLE_OAUTH_SECRET}"
     - don't forget to actually set values for the `_DEFAULT` variables you get warnings about when starting the app. To set these up you have to make an environment variable that doesn't have the `_DEFAULT` suffix, you could set them in the `docker-compose.yaml` file.
     - **Make sure you enable https!** To do so, check the [Enabling https](#enabling-https) section.
 
+#### Renaming
+
+If you want to rename this project to your actual project name search for the string `BackendBaseTemplate` and replace it with your projects name. Rename `BackendBaseTemplate.sln` to your project name. You could also delete the first line of this README.md and the steps to add a new entity. You could also delete the `TestController`.
+
 #### Development
 
 I recomend running the database and the api separatley for this. You will require docker and docker-compose just like the running part and also [Dotnet 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).

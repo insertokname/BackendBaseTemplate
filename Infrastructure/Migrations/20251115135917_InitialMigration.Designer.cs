@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250824101023_InitialMigration")]
+    [Migration("20251115135917_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -31,13 +31,19 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Username")
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Secret")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("UserLoginType")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
