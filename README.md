@@ -16,7 +16,7 @@ Backend api template
 
 - Admin users that can easily manage database through api endpoints
 
-- Secure login through JWT
+- Secure login through JWT and OAuth
 
 - Rate limitng for login and most other public endpoints
 
@@ -26,6 +26,7 @@ Backend api template
 
 ### Dependencies
 
+- Google OAuth and Vertex ai. Setup detailed below.
 - [Docker](https://www.docker.com/products/docker-desktop/) and also [docker-compose](https://github.com/docker/compose)
 
 ##### Setting up required gcp services
@@ -40,11 +41,15 @@ Backend api template
 
 - clone the repo `git clone https://github.com/insertokname/BackendBaseTemplate.git`
 - cd into it `cd BackendBaseTemplate`
-- make a file name `.env` in the directory containing the following (these will be the default logins for the admin account of the api):
+- make a file named `.env` in the directory containing the following (replace the placeholder values `{}`):
 ```
-BACKEND_ADMIN_USERNAME=admin
-BACKEND_ADMIN_PASSWORD=AVeryStrongPassword!
+PORT="8888"
+DOMAIN_NAME="{YOUR.DOMAIN.NAME}"
+GOOGLE_PROJECT_ID="{YOUR_GOOGLE_PROJECT_ID}"
+GOOGLE_OAUTH_ID="{YOUR_GOOGLE_OAUTH_ID}"
+GOOGLE_OAUTH_SECRET="{YOUR_GOOGLE_OAUTH_SECRET}"
 ```
+
 - *make sure docker desktop is running! and docker-compose command is installed*
 - run `docker-compose --profile http up -d`. This will start the api in http mode and will also start the database service. You can see your running containers in docker desktop or by running `docker-compose ps`. You can stop the container by running `docker-compose --profile http down` or by going in the docker desktop app and stopping them manually. You can also reset the database by deleting the data under `~/.BackendBaseTemplate/postgres` OR `%USERPROFILE%\BackendBaseTemplate\postgres`
 - If you are planning on using this for production:
@@ -78,6 +83,6 @@ docker-compose run --remove-orphans --service-ports --entrypoint certbot certbot
 
 - Create the new entity derived class inside the Domain/Entities folder
 - Make it's create command, you can either do this by creating your own custom create command or by using the generic commands like create handler as shown for the EntityTemplate class
-- If you decide to make a custom handler you need to add it to dependency injection in the program.cs like so: `builder.Services.AddScoped(typeof(<YOUR_NEW_HANDLER>));`\
+- If you decide to make a custom handler you need to add it to dependency injection in `Presentation\Configuration\ApplicationServicesConfiguration.cs` like so: `builder.Services.AddScoped(typeof(<YOUR_NEW_HANDLER>));`\
 - Last thing is add it in the AppDbContext.cs inside the infrastructre/data folder as a DbSet
 - migrate changes `dotnet ef migrations add <MIGRATION_NAME>`
