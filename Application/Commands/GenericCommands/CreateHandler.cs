@@ -1,24 +1,20 @@
-using BackendBaseTemplate.domain.Entities;
-using BackendBaseTemplate.infrastructure.Repositories;
 
-namespace BackendBaseTemplate.application.Commands.GenericCommands;
+using Domain.Entities;
 
-public class CreateHandler<CreateCommand, E>
-where CreateCommand : ICreateCommand<E>
-where E : Entity
+using Infrastructure.Repositories;
+
+namespace Application.Commands.GenericCommands
 {
-    private readonly IRepository<E> _entityRepository;
-
-    public CreateHandler(IRepository<E> entityRepository)
+    public class CreateHandler<CreateCommand, E>(IRepository<E> entityRepository)
+    where CreateCommand : CreateCommand<E>
+    where E : Entity
     {
-        _entityRepository = entityRepository;
-    }
-
-    public async Task<E> HandleAsync(CreateCommand command)
-    {
-        E newEntity = command.CreateEntity();
-        await _entityRepository.AddAsync(newEntity);
-        await _entityRepository.SaveChangesAsync();
-        return newEntity;
+        public async Task<E> HandleAsync(CreateCommand command)
+        {
+            E newEntity = command.CreateEntity();
+            await entityRepository.AddAsync(newEntity);
+            await entityRepository.SaveChangesAsync();
+            return newEntity;
+        }
     }
 }

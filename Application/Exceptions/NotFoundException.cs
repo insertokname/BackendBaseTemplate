@@ -1,7 +1,6 @@
-namespace BackendBaseTemplate.application.Exceptions;
-
-public class NotFoundException : Exception
+namespace Application.Exceptions
 {
-
-    public NotFoundException(string message) : base(message) { }
+    public class NotFoundException(string message) : Exception(message)
+    {
+    }
 }

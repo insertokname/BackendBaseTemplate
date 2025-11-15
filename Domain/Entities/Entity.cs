@@ -1,11 +1,7 @@
-namespace BackendBaseTemplate.domain.Entities;
-
-public class Entity
+namespace Domain.Entities
 {
-    public Guid Id { get; set; }
-
-    public Entity(Guid id)
+    public class Entity(Guid id)
     {
-        Id = id;
+        public Guid Id { get; set; } = id;
     }
 }

@@ -4,15 +4,19 @@ x-common-variables: &common-variables
   DB_USERNAME: ${DB_USERNAME:-}
   DB_PASSWORD: ${DB_PASSWORD:-}
   DB_NAME: ${DB_NAME:-}
-  BACKEND_ADMIN_USERNAME: ${BACKEND_ADMIN_USERNAME:-}
-  BACKEND_ADMIN_PASSWORD: ${BACKEND_ADMIN_PASSWORD:-}
-  BACKEND_ADMIN_GUID: ${BACKEND_ADMIN_GUID:-}
   JWT_SECRET: ${JWT_SECRET:-}
   JWT_ISSUER: ${JWT_ISSUER:-}
   JWT_AUDIENCE: ${JWT_AUDIENCE:-}
   JWT_EXPIRATION_IN_MINUTES: ${JWT_EXPIRATION_IN_MINUTES:-}
-
-
+  DOMAIN_NAME: ${DOMAIN_NAME:-}
+  PORT: ${PORT:-}
+  API_PROTOCOL: ${API_PROTOCOL:-}
+  GOOGLE_OAUTH_ID: ${GOOGLE_OAUTH_ID:-}
+  GOOGLE_OAUTH_SECRET: ${GOOGLE_OAUTH_SECRET:-}
+  GOOGLE_PROJECT_ID: ${GOOGLE_PROJECT_ID:-}
+  GOOGLE_PROJECT_LOCATION: ${GOOGLE_PROJECT_LOCATION:-}
+  GOOGLE_PROJECT_AI_PUBLISHER: ${GOOGLE_PROJECT_AI_PUBLISHER:-}
+  GOOGLE_PROJECT_AI_MODEL: ${GOOGLE_PROJECT_AI_MODEL:-}
 services:
   certbot:
     image: certbot/certbot
@@ -23,9 +27,9 @@ services:
       - certbot-etc:/etc/letsencrypt
     entrypoint: >
       sh -c "while true; do
-               certbot renew --standalone --preferred-challenges http;
-               sleep 12h;
-             done"
+        certbot renew --standalone --preferred-challenges http;
+        sleep 12h;
+          done"
     profiles:
       - https
 

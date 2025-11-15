@@ -1,26 +1,19 @@
-using BackendBaseTemplate.application.Exceptions;
-using BackendBaseTemplate.domain.Entities;
-using BackendBaseTemplate.infrastructure.Repositories;
+using Application.Query.GenericQueries;
 
-namespace BackendBaseTemplate.application.Commands.GenericCommands;
+using Domain.Entities;
 
+using Infrastructure.Repositories;
 
-public class DeleteByIdHandler<E>
-where E : Entity
+namespace Application.Commands.GenericCommands
 {
-    private readonly IRepository<E> _entityRepository;
-
-    public DeleteByIdHandler(IRepository<E> entityRepository)
+    public class DeleteByIdHandler<E>(IRepository<E> entityRepository, GetByIdHandler<E> getByIdHandler)
+    where E : Entity
     {
-        _entityRepository = entityRepository;
-    }
-
-    public async Task HandleAsync(DeleteByIdCommand command)
-    {
-        var entity = await _entityRepository.GetByIdAsync(command.Id);
-        if (entity == null)
-            throw new NotFoundException($"{nameof(E)} not found for the given id: {command.Id}!");
-        _entityRepository.Remove(entity);
-        await _entityRepository.SaveChangesAsync();
+        public async Task HandleAsync(DeleteByIdCommand command)
+        {
+            var e = await getByIdHandler.HandleAsync(new GetByIdQuery { EntityId = command.EntityId });
+            entityRepository.Remove(e);
+            await entityRepository.SaveChangesAsync();
+        }
     }
 }

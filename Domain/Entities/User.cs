@@ -1,23 +1,29 @@
-using BackendBaseTemplate.domain.Commands.DataTransferObjects;
-using domain.ValueObjects;
-
-namespace BackendBaseTemplate.domain.Entities;
-
-public class User : Entity
+﻿namespace Domain.Entities
 {
-    public string Username { get; set; } = null!;
-    public string Password { get; set; } = null!;
-    public bool IsAdmin { get; set; } = false;
-    protected User() : base(Guid.Empty) { }
-    public User(
-        Guid id,
-        string username,
-        string password,
-        bool isAdmin = false
-    ) : base(id)
+    public class User : Entity
     {
-        Username = username;
-        Password = password;
-        IsAdmin = isAdmin;
+        public string Email { get; set; } = null!;
+        public string Secret { get; set; } = null!;
+        public bool IsAdmin { get; set; } = false;
+        public LoginType UserLoginType { get; set; }
+        protected User() : base(Guid.Empty) { }
+
+        public User(
+            Guid id,
+            string email,
+            string secret,
+            LoginType userLoginType
+        ) : base(id)
+        {
+            Email = email;
+            Secret = secret;
+            UserLoginType = userLoginType;
+        }
+
+        public enum LoginType
+        {
+            Google,
+            Password
+        }
     }
 }

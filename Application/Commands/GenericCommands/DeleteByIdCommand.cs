@@ -1,6 +1,7 @@
-namespace BackendBaseTemplate.application.Commands.GenericCommands;
-
-public class DeleteByIdCommand
+namespace Application.Commands.GenericCommands
 {
-    public required Guid Id { get; set; }
-};
+    public class DeleteByIdCommand
+    {
+        public required Guid EntityId { get; set; }
+    };
+}

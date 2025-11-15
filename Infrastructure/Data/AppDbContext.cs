@@ -1,34 +1,26 @@
-using BackendBaseTemplate.domain.Entities;
+﻿using Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
-namespace BackendBaseTemplate.infrastructure.Data;
 
-public class AppDbContext : DbContext
+namespace Infrastructure.Data
 {
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<EntityTemplate> EntityTemplates { get; set; } = null!;
-
-    private readonly SecretsManager _secretsManager;
-
-    public AppDbContext(SecretsManager secretsManager)
+    public class AppDbContext(SecretsManager secretsManager) : DbContext
     {
-        _secretsManager = secretsManager;
-    }
+        public DbSet<User> Users { get; set; } = null!;
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseNpgsql(
-            $"Host={_secretsManager.DbHost};" +
-            $"Port={_secretsManager.DbPort};" +
-            $"Username={_secretsManager.DbUsername};" +
-            $"Password={_secretsManager.DbPassword};" +
-            $"Database={_secretsManager.DbName}");
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<EntityTemplate>(et =>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            et.OwnsOne(e => e.EntityTemplateDataObjects);
-        });
+            optionsBuilder.UseNpgsql(
+                $"Host={secretsManager.DbHost};" +
+                $"Port={secretsManager.DbPort};" +
+                $"Username={secretsManager.DbUsername};" +
+                $"Password={secretsManager.DbPassword};" +
+                $"Database={secretsManager.DbName}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
     }
 }

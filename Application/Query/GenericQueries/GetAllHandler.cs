@@ -1,21 +1,15 @@
-using BackendBaseTemplate.domain.Entities;
-using BackendBaseTemplate.infrastructure.Repositories;
+using Domain.Entities;
 
-namespace BackendBaseTemplate.application.Query.GenericQueries;
+using Infrastructure.Repositories;
 
-
-public class GetAllHandler<E>
-where E : Entity
+namespace Application.Query.GenericQueries
 {
-    private readonly IRepository<E> _entityRepository;
-
-    public GetAllHandler(IRepository<E> entityRepository)
+    public class GetAllHandler<E>(IRepository<E> entityRepository)
+    where E : Entity
     {
-        _entityRepository = entityRepository;
-    }
-
-    public async Task<IEnumerable<E>> HandleAsync()
-    {
-        return await _entityRepository.GetAllAsync();
+        public async Task<IEnumerable<E>> HandleAsync()
+        {
+            return await entityRepository.GetAllAsync();
+        }
     }
 }

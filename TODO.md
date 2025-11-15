@@ -1,7 +1,0 @@
-- [x] add user login in swagger
-- [ ] make controllers more generic
-- [x] move files out of the src folders
-- [ ] remove default admin user thingy
-- [x] make a generic entity with a data object to be used as a template
-- [ ] outline where different features are in what file
-- [x] show the steps to add a new controller / entity / anything you might need

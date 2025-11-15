@@ -2,13 +2,11 @@ Backend api template
 
 ### Design Patterns Employed
 
-- **Repository Pattern**
-
 - **CQRS (Command Query Responsibility Segregation)**
-
+- **CLEAN architecture**
+- **MVC**
 - **Dependency Injection**
-
-- **DDD (Domain-Driven Design)**
+- **Repository Pattern**
 
 ### Features provided
 
@@ -26,11 +24,19 @@ Backend api template
 
 # Building / Running
 
-### Dependecies
+### Dependencies
 
 - [Docker](https://www.docker.com/products/docker-desktop/) and also [docker-compose](https://github.com/docker/compose)
 
-##### Running api and database toghether
+##### Setting up required gcp services
+
+- Make a gcp project [here](https://console.cloud.google.com)
+- Setup OAUTH [here](https://console.cloud.google.com/auth/clients). The app is registered as a web app. It has 2 authorized redirects `http://localhost:8888/signin-google` and `https://{YOUR.DOMAIN}/signin-google`. After setting this up copy you oauth secret and oauth id.
+- Setup vertex ai [here](https://console.cloud.google.com/vertex-ai/studio/multimodal) (enable required apis)
+- make a google service key from [here](https://console.cloud.google.com/iam-admin/serviceaccounts) click on your project, add a service account. Give it any name you wish. Give it the Owner permissions (if you want to be safer you can just give it vertex ai specific permissions). I didn't personally fill out any "Principals with access". After this click on done. Click on the newly created service account. Go to the keys section. Click on add key, create new key. Select json and create. Copy the newly created file into the `Presentation/Environment` path and rename it to `key.json`. 
+- You are done! All external services related to gcp are setup.
+
+##### Running api and database together
 
 - clone the repo `git clone https://github.com/insertokname/BackendBaseTemplate.git`
 - cd into it `cd BackendBaseTemplate`
